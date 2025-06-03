@@ -25,11 +25,19 @@ export const LearningPath = () => {
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       {lessons.map((lesson, index) => (
         <View
-          key={lesson.id}
-          style={[
-            styles.blobWrapper,
-            index % 2 === 0 ? styles.left : styles.right,
-          ]}
+            key={lesson.id}
+            style={[
+                styles.blobWrapper,
+                {
+                marginLeft: index % 2 === 0
+                    ? 20 + Math.floor(Math.random() * 70) // 20–29 px
+                    : undefined,
+                marginRight: index % 2 !== 0
+                    ? 20 + Math.floor(Math.random() * 70) // 20–29 px
+                    : undefined,
+                alignSelf: index % 2 === 0 ? 'flex-start' : 'flex-end',
+                },
+            ]}
         >
           <LearningPathBlob
             status={lesson.status}
