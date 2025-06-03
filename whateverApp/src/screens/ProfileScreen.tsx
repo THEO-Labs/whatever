@@ -1,20 +1,10 @@
 import React from 'react';
-import {Button, Text, View, StyleSheet} from 'react-native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../navigation/AppNavigator';
+import {View, Text} from 'react-native';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Profile'>;
-
-export default function ProfileScreen({navigation}: Props) {
+export default function ProfileScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Profile Screen</Text>
-      <Button title="Back to Home" onPress={() => navigation.navigate('Home')} />
+    <View>
+      <Text>Profile Screen</Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {flex: 1, justifyContent: 'center', alignItems: 'center'},
-  text: {fontSize: 24, marginBottom: 20},
-});
