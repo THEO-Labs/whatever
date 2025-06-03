@@ -41,28 +41,10 @@ export const TrackerManager: React.FC = () => {
       });
     });
 
-    // 4. Schrittzähler alle 60 Sek.
-    const intervalMs = 5_000;
-    const pedometerInterval = setInterval(async () => {
-      const now = Date.now();
-      const oneMinuteAgo = now - intervalMs;
-      try {
-        const steps = await PedometerModule.getStepsInRange(oneMinuteAgo, now);
-        console.log('[Steps]', steps);
-        await saveToBuffer({
-          type: 'steps',
-          data: steps,
-          timestamp: now,
-        });
-      } catch (e) {
-        console.warn('[Pedometer] Fehler beim Abrufen der Schritte:', e);
-      }
-    }, intervalMs);
 
     return () => {
       BackgroundGeolocation.removeAllListeners();
       activityListener.remove();
-      clearInterval(pedometerInterval);
     };
   }, []);
 
