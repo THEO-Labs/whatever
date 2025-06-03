@@ -62,20 +62,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
-    shadowColor: '#000',
-    shadowOffset: { width: 10, height: 2 },
-    shadowOpacity: .15,
-    shadowRadius: 4,
-    elevation: 4,
+    shadowColor: "#FCA5A5",
+    shadowOffset: { width: 10, height: -5 },
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 1,
   },
+
   locked: {
-    backgroundColor: '#E5E7EB', // light gray
+    backgroundColor: '#E5E7EB', 
   },
   inProgress: {
-    backgroundColor: Colors.raspberry, // soft yellow
+    backgroundColor: Colors.raspberry,
+    borderWidth: 2,
+    borderColor: Colors.red,
   },
   completed: {
-    backgroundColor: '#BBF7D0', // soft green
+    backgroundColor: '#BBF7D0', 
   },
   icon: {
     fontSize: 32,
