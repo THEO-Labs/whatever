@@ -1,32 +1,40 @@
-import React, {useEffect} from 'react';
-import {LogBox} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import React from 'react';
+import {StatusBar, useColorScheme, View, StyleSheet} from 'react-native';
+import {NavigationContainer, useNavigationContainerRef} from '@react-navigation/native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import AppNavigator from './src/navigation/AppNavigator';
-import {TrackerManager} from './src/utils/BackgroundTracker';
-import {calculateDailyActivityScores} from './src/utils/calculateActivityScore';
+import {CustomHeader} from './src/components/CustomHeader';
 
-LogBox.ignoreLogs(['new NativeEventEmitter']); // optional
-
-const App: React.FC = () => {
-  useEffect(() => {
-    const interval = setInterval(() => {
-      calculateDailyActivityScores().then(scores => {
-        console.log('Tages-Score (alle 15s):', scores);
-      });
-    }, 15_000);
-
-    // Clean-up bei Unmount
-    return () => clearInterval(interval);
-  }, []);
+export default function App() {
+  const isDarkMode = useColorScheme() === 'dark';
+  const navigationRef = useNavigationContainerRef();
+  const [currentRoute, setCurrentRoute] = React.useState<string>();
 
   return (
-    <>
-      <TrackerManager />
-      <NavigationContainer>
-        <AppNavigator />
-      </NavigationContainer>
-    </>
+    <NavigationContainer
+      ref={navigationRef}
+      onReady={() => {
+        setCurrentRoute(navigationRef.getCurrentRoute()?.name);
+      }}
+      onStateChange={() => {
+        setCurrentRoute(navigationRef.getCurrentRoute()?.name);
+      }}>
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <SafeAreaView style={styles.container}>
+        <CustomHeader currentRoute={currentRoute} navigationRef={navigationRef} />
+        <View style={styles.navigator}>
+          <AppNavigator />
+        </View>
+      </SafeAreaView>
+    </NavigationContainer>
   );
-};
+}
 
-export default App;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  navigator: {
+    flex: 1,
+  },
+});

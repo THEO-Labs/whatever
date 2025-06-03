@@ -1,6 +1,7 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import Svg, {Circle} from 'react-native-svg';
+import { StyleSheet, Text, View } from 'react-native';
+import Svg, { Circle } from 'react-native-svg';
+import Colors from "../design/colors"
 
 type Props = {
   value: number;
@@ -64,13 +65,13 @@ const styles = StyleSheet.create({
     top: 39,
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#2E2F31',
+    color: Colors.green, // updated to use brand color
   },
   label: {
     marginTop: 8,
     fontSize: 12,
     fontWeight: '600',
-    color: '#2E2F31',
+    color: Colors.green, // updated to use brand color
     letterSpacing: 1,
   },
 });
