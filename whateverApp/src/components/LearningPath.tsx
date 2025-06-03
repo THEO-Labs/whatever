@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { LearningPathBlob } from './LearningPathBlob';
 import Colors from '../design/colors';
+import { LockIcon, BookIcon, CheckIcon } from '../components/LessonIcons'; 
 
 type LessonStatus = 'locked' | 'in-progress' | 'completed';
 
@@ -16,7 +17,7 @@ interface Lesson {
 const lessons: Lesson[] = Array.from({ length: 28 }, (_, i) => ({
   id: i + 1,
   label: `${i + 1}`,
-  icon: i === 0 ? '🔒' : i === 1 ? '📘' : '✅',
+  icon: i === 0 ? <LockIcon /> : i === 1 ? <BookIcon /> : <CheckIcon />,
   status: i === 0 ? 'locked' : i === 1 ? 'in-progress' : 'completed',
 }));
 
