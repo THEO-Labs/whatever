@@ -1,5 +1,6 @@
 // CustomHeader.tsx
 import React, { useEffect, useState } from 'react';
+import { TrackerManager } from '../utils/BackgroundTracker';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { ActivityCircle } from './whoopCircles';
 import Colors from '../design/colors';
@@ -41,6 +42,7 @@ export const CustomHeader = ({ currentRoute, navigationRef }: { currentRoute?: s
 
   return (
     <View style={styles.header}>
+      <TrackerManager />
       <View style={styles.leftIcon}>
         <TouchableOpacity onPress={goBackOrProfile}>
           {currentRoute === 'Profile' ? <ArrowLeft color={Colors.green} /> : <User color={Colors.green} />}
