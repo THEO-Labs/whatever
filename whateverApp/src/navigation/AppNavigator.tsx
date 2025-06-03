@@ -3,6 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import OnboardingScreen from '../screens/OnboardingScreen';
+import {CardStyleInterpolators} from '@react-navigation/stack';
 
 export type RootStackParamList = {
   Onboarding: undefined;
@@ -22,8 +23,20 @@ export default function AppNavigator({
       initialRouteName={initialRoute}
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          gestureDirection: 'horizontal',
+        }}
+      />
+      <Stack.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          gestureDirection: 'horizontal',
+        }}
+      />
     </Stack.Navigator>
   );
 }
