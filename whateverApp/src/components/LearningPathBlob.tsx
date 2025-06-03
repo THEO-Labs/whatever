@@ -12,6 +12,7 @@ export const LearningPathBlob: React.FC<LearningPathBlobProps> = ({
   status,
   icon,
   label,
+  onPress,
 }) => {
   const statusStyle = {
     locked: styles.locked,
@@ -24,6 +25,10 @@ export const LearningPathBlob: React.FC<LearningPathBlobProps> = ({
     "in-progress": null,
     completed: <Text style={{ fontSize: 18 }}>✔️</Text>,
   };
+
+  const renderIcon = typeof icon === 'string'
+    ? <Text style={styles.icon}>{icon}</Text>
+    : icon;
 
   return (
     <View style={styles.container}>
