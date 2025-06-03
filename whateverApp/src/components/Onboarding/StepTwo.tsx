@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Button,
   Image,
@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import {RulerPicker} from 'react-native-ruler-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function StepTwo({
   next,
@@ -21,15 +21,54 @@ export default function StepTwo({
   const [hasPeriod, setHasPeriod] = useState<boolean | null>(null);
   const [cycleLength, setCycleLength] = useState<number>(28);
   const [lastPeriodDate, setLastPeriodDate] = useState<Date>(new Date());
+  const [tempDate, setTempDate] = useState<Date>(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const confirmButtonRef = useRef<View>(null);
 
   const handleDateChange = (_event: any, selectedDate?: Date) => {
-    setShowDatePicker(false);
-    if (selectedDate) setLastPeriodDate(selectedDate);
+    console.log('DatePicker event triggered:', selectedDate);
+    if (selectedDate) {
+      setTempDate(new Date(selectedDate));
+      setTempDate(new Date(selectedDate));
+    }
   };
 
+  const confirmDate = () => {
+    setLastPeriodDate(new Date(tempDate));
+    console.log('Confirmed date:', tempDate.toLocaleDateString('de-DE'));
+    setShowDatePicker(false);
+  };
+
+  const toggleDatePicker = () => {
+    console.log('Toggling DatePicker, current showDatePicker:', showDatePicker);
+    setShowDatePicker(!showDatePicker);
+    if (!showDatePicker) {
+      setTempDate(new Date(lastPeriodDate));
+      console.log(
+        'Temp date reset to:',
+        lastPeriodDate.toLocaleDateString('de-DE'),
+      );
+    }
+  };
+
+  // Scroll to the confirm button when DatePicker opens
+  useEffect(() => {
+    if (showDatePicker && scrollViewRef.current && confirmButtonRef.current) {
+      setTimeout(() => {
+        confirmButtonRef.current?.measure(
+          (x, y, width, height, pageX, pageY) => {
+            console.log('Confirm button position:', {x, y, pageX, pageY});
+            scrollViewRef.current?.scrollTo({y: pageY, animated: true});
+            console.log('Scrolling to confirm button at y:', pageY);
+          },
+        );
+      }, 100); // Delay to ensure rendering
+    }
+  }, [showDatePicker]);
+
   return (
-    <View style={{flex: 1, padding: 24}}>
+    <View style={{flex: 1, padding: 15, marginTop: 15}}>
       {/* Header mit Logo */}
       <View
         style={{
@@ -56,7 +95,9 @@ export default function StepTwo({
         }}>
         Nur ein paar Infos, damit wir dich besser verstehen können 💚
       </Text>
-      <ScrollView contentContainerStyle={{flexGrow: 1}}>
+      <ScrollView
+        ref={scrollViewRef}
+        contentContainerStyle={{flexGrow: 1, paddingBottom: 100}}>
         {/* Frage: Periode aktuell? */}
         <Text style={{color: '#fff', fontSize: 16, marginBottom: 12}}>
           Hast du aktuell deine Periode?
@@ -92,7 +133,6 @@ export default function StepTwo({
             </Text>
           </TouchableOpacity>
         </View>
-
         {/* Zykluslänge */}
         <Text style={{color: '#fff', fontSize: 16, marginBottom: 25}}>
           Wie lang ist dein Zyklus ungefähr?
@@ -118,24 +158,54 @@ export default function StepTwo({
           Wann war der erste Tag deiner letzten Periode?
         </Text>
         <TouchableOpacity
-          onPress={() => setShowDatePicker(true)}
+          onPress={toggleDatePicker}
           style={{
             backgroundColor: '#fff',
             padding: 12,
             borderRadius: 10,
-            marginBottom: 32,
+            alignItems: 'center',
+            marginBottom: 12,
           }}>
-          <Text>{lastPeriodDate.toLocaleDateString('de-DE')}</Text>
+          <Text style={{color: '#000', fontSize: 16}}>
+            {lastPeriodDate.toLocaleDateString('de-DE')}
+          </Text>
         </TouchableOpacity>
-
-        {/* Date Picker anzeigen */}
-        {Platform.OS === 'ios' && showDatePicker && (
-          <DateTimePicker
-            value={lastPeriodDate}
-            mode="date"
-            display="inline"
-            onChange={handleDateChange}
-          />
+        {showDatePicker && (
+          <View
+            style={{
+              minHeight: 260,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <TouchableOpacity
+              ref={confirmButtonRef}
+              onPress={confirmDate}
+              style={{
+                backgroundColor: '#F25E5E',
+                padding: 12,
+                borderRadius: 10,
+                alignItems: 'center',
+                marginBottom: 12,
+                width: 120,
+              }}>
+              <Text style={{color: '#fff', fontSize: 16}}>Bestätigen</Text>
+            </TouchableOpacity>
+            <DateTimePicker
+              value={tempDate}
+              mode="date"
+              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+              maximumDate={new Date()}
+              onChange={handleDateChange}
+              style={{
+                backgroundColor: '#fff',
+                borderRadius: 10,
+                width: '100%',
+                minHeight: 200,
+                zIndex: 1000,
+              }}
+              locale="de-DE"
+            />
+          </View>
         )}
 
         {/* Navigation */}
