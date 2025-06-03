@@ -1,79 +1,88 @@
-import React from 'react';
-import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Button, Text, View} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigation/AppNavigator';
-import {LearningPathBlob} from '../components/LearningPathBlob';
-import {TrackerManager} from '../utils/BackgroundTracker';
+import {ActivityCircle} from '../components/whoopCircles.tsx';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
-const blobs = [
-  {icon: '🔤', label: 'Intro', status: 'completed'},
-  {icon: '📚', label: 'Basics', status: 'completed'},
-  {icon: '🧠', label: 'Memory', status: 'in-progress'},
-  {icon: '🗣️', label: 'Speaking', status: 'locked'},
-  {icon: '📝', label: 'Writing', status: 'locked'},
-];
-
 export default function HomeScreen({navigation}: Props) {
+  const [steps, setSteps] = useState<number>(0);
+  const [activityScore, setActivityScore] = useState<number>(0);
+  const [restScore, setRestScore] = useState<number>(0);
+
+  useEffect(() => {
+    const loadSteps = async () => {
+      try {
+        const bufferRaw = await AsyncStorage.getItem('trackBuffer');
+        const buffer = JSON.parse(bufferRaw || '[]');
+        const today = new Date().toISOString().split('T')[0];
+        let total = 0;
+
+        for (const e of buffer) {
+          if (
+            e.type === 'steps' &&
+            new Date(e.timestamp).toISOString().startsWith(today)
+          ) {
+            total += e.data?.steps ?? 0;
+          }
+        }
+
+        setSteps(total);
+      } catch (e) {
+        console.warn('Fehler beim Laden der Schritte:', e);
+      }
+    };
+
+    const getActivityScores = async () => {
+      try {
+        const rawScores = await AsyncStorage.getItem('dailyActivityScores');
+        const parsed = JSON.parse(rawScores || '{}');
+        const today = new Date().toISOString().split('T')[0];
+        setActivityScore(parsed[today]?.activityScore ?? 0);
+        setRestScore(parsed[today]?.restScore ?? 0);
+      } catch (e) {
+        console.warn('Fehler beim Laden der Aktivitäts-Scores:', e);
+      }
+    };
+
+    // Initial laden
+    getActivityScores();
+    loadSteps();
+
+    // Automatisch alle 15 Sekunden neu laden
+    const interval = setInterval(() => {
+      getActivityScores();
+      loadSteps();
+    }, 15_000);
+
+    // Aufräumen beim Verlassen
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <View style={{flex: 1}}>
-      <ScrollView contentContainerStyle={styles.container}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Profile')}
-          style={styles.profileButton}>
-          <Text style={styles.profileText}>Profile</Text>
-        </TouchableOpacity>
-        <TrackerManager />
-        <Text style={styles.title}>Learning Path</Text>
-        <View style={styles.path}>
-          {blobs.map((blob, index) => (
-            <View key={index} style={styles.blobWrapper}>
-              <LearningPathBlob
-                icon={blob.icon}
-                label={blob.label}
-                status={blob.status as any}
-              />
-              {index < blobs.length - 1 && <View style={styles.connector} />}
-            </View>
-          ))}
-        </View>
-      </ScrollView>
+    <View>
+      <Text>Home Screen</Text>
+      <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+        <ActivityCircle
+          value={activityScore}
+          max={100}
+          label="Activityscore"
+          color="#84B3DC"
+        />
+        <ActivityCircle value={restScore} max={100} label="Rest" color="#00D46F" />
+        <ActivityCircle
+          value={steps}
+          max={10000}
+          label="Steps"
+          color="#3F85E2"
+        />
+      </View>
+      <Button
+        title="Go to Detail"
+        onPress={() => navigation.navigate('Profile')}
+      />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    paddingVertical: 40,
-    alignItems: 'center',
-    paddingBottom: 100,
-  },
-  profileButton: {
-    position: 'absolute',
-    top: 10,
-    left: 20,
-    zIndex: 10,
-  },
-  profileText: {
-    fontSize: 16,
-    color: '#007AFF',
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: '600',
-    marginBottom: 24,
-  },
-  path: {
-    alignItems: 'center',
-  },
-  blobWrapper: {
-    alignItems: 'center',
-  },
-  connector: {
-    width: 4,
-    height: 40,
-    backgroundColor: '#ccc',
-    marginVertical: 6,
-  },
-});

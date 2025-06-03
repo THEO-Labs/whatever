@@ -42,7 +42,7 @@ export const TrackerManager: React.FC = () => {
     });
 
     // 4. Schrittzähler alle 60 Sek.
-    const intervalMs = 60_000;
+    const intervalMs = 5_000;
     const pedometerInterval = setInterval(async () => {
       const now = Date.now();
       const oneMinuteAgo = now - intervalMs;
