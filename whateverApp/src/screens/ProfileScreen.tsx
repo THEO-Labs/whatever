@@ -7,7 +7,7 @@ export default function ProfileScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Image
-          source={{ uri: 'https://via.placeholder.com/120' }}
+          source={require('../images/avatar.png')}
           style={styles.profileImage}
         />
       </View>
@@ -17,7 +17,7 @@ export default function ProfileScreen() {
       <View style={styles.statsRow}>
         <View style={styles.statBox}>
           <Text style={styles.statValue}>6</Text>
-          <Text style={styles.statLabel}>Folge ich</Text>
+          <Text style={styles.statLabel}>Following</Text>
         </View>
         <View style={styles.statBox}>
           <Text style={styles.statValue}>5</Text>
@@ -26,24 +26,24 @@ export default function ProfileScreen() {
       </View>
 
       <TouchableOpacity style={styles.addFriendButton}>
-        <Text style={styles.addFriendText}>+ FREUNDE HINZUFÜGEN</Text>
+        <Text style={styles.addFriendText}>+ ADD FRIENDS</Text>
       </TouchableOpacity>
 
-      <Text style={styles.sectionTitle}>Übersicht</Text>
+      <Text style={styles.sectionTitle}>Overvivew</Text>
       <View style={styles.overviewRow}>
         <View style={styles.overviewBox}>
           <Text style={styles.overviewValue}>0</Text>
-          <Text style={styles.overviewLabel}>Streak-Tage</Text>
+          <Text style={styles.overviewLabel}>Streak-Days</Text>
         </View>
         <View style={styles.overviewBox}>
           <Text style={styles.overviewValue}>1478</Text>
-          <Text style={styles.overviewLabel}>XP insgesamt</Text>
+          <Text style={styles.overviewLabel}>Overall XP</Text>
         </View>
       </View>
       <View style={styles.overviewRow}>
         <View style={styles.overviewBox}>
           <Text style={styles.overviewValue}>🥉</Text>
-          <Text style={styles.overviewLabel}>Bronze Liga</Text>
+          <Text style={styles.overviewLabel}>Bronce League</Text>
         </View>
         <View style={styles.overviewBox}>
           <Text style={styles.overviewValue}>1</Text>
