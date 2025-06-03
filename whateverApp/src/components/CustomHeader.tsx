@@ -1,7 +1,7 @@
-// CustomHeader.tsx
 import React, { useEffect, useState } from 'react';
 import { TrackerManager } from '../utils/BackgroundTracker';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import { ActivityCircle } from './whoopCircles';
 import Colors from '../design/colors';
 import { ArrowLeft, User } from 'lucide-react-native';
@@ -42,54 +42,87 @@ export const CustomHeader = ({ currentRoute, navigationRef }: { currentRoute?: s
   };
 
   return (
-    <View style={styles.header}>
-      <TrackerManager />
-      {currentRoute === 'Profile' ? (
-        <View style={styles.iconLeft}>
-          <TouchableOpacity onPress={goBackOrProfile}>
-            <ArrowLeft color={Colors.green} />
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <View style={styles.iconRight}>
-          <TouchableOpacity onPress={goBackOrProfile}>
-            <User color={Colors.green} />
-          </TouchableOpacity>
+    <>
+      <View style={styles.topBarContainer}>
+        <LinearGradient
+          colors={['#ffffff', 'rgba(255,255,255,0.5)', 'rgba(255,255,255,0)']}
+          style={styles.topBarSolid}
+          start={{ x: 0.5, y: 0 }}
+          end={{ x: 0.5, y: 1 }}
+        />
+        <LinearGradient
+          colors={['rgba(255,255,255,1)', 'rgba(255,255,255,0.99)', 'rgba(255,255,255,0)']}
+          style={StyleSheet.absoluteFill}
+          start={{ x: 0.5, y: 0 }}
+          end={{ x: 0.5, y: 1 }}
+        >
+          {currentRoute === 'Profile' ? (
+            <TouchableOpacity onPress={goBackOrProfile} style={styles.topIconLeft}>
+              <ArrowLeft color={Colors.green} />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={goBackOrProfile} style={styles.topIconRight}>
+              <User color={Colors.green} />
+            </TouchableOpacity>
+          )}
+        </LinearGradient>
+      </View>
+
+      {currentRoute === 'Home' && (
+        <View style={styles.header}>
+          <TrackerManager />
+          <View style={styles.circles}>
+            <ActivityCircle value={focus} max={100} label="Rest" color={Colors.lime} />
+            <ActivityCircle value={energy} max={100} label="Activity" color={Colors.red} />
+            <ActivityCircle value={steps} max={10000} label="Steps" color={Colors.green} />
+          </View>
         </View>
       )}
-      <View style={styles.circles}>
-        <ActivityCircle value={focus} max={100} label="Rest" color={Colors.lime} />
-        <ActivityCircle value={energy} max={100} label="Activity" color={Colors.red} />
-        <ActivityCircle value={steps} max={10000} label="Steps" color={Colors.green} />
-      </View>
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+  topBarContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 120,
+    zIndex: 1001,
+    justifyContent: 'center',
+  },
+  topBarSolid: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  topIconLeft: {
+    position: 'absolute',
+    top: 50,
+    left: 20,
+  },
+  topIconRight: {
+    position: 'absolute',
+    top: 50,
+    right: 20,
+  },
   header: {
-    paddingTop: 50,
-    paddingHorizontal: 16,
-    paddingBottom: 2,
-    backgroundColor: '#ffffff',
-    borderBottomWidth: 0,
-  },
-  iconLeft: {
     position: 'absolute',
-    top: 55,
-    left: 15,
-    zIndex: 10,
-  },
-  iconRight: {
-    position: 'absolute',
-    top: 55,
-    right: 15,
-    zIndex: 10,
+    top: 90,
+    left: 16,
+    right: 16,
+    paddingBottom: 16,
+    backgroundColor: 'rgba(255,255,255,0.9)',
+    borderRadius: 16,
+    zIndex: 1000,
+    elevation: 10,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   },
   circles: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 20,
-    gap: 2,
+    marginTop: 24,
+    gap: 12,
   },
 });

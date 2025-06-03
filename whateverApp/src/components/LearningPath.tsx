@@ -1,90 +1,157 @@
-import React from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import React, { useRef } from 'react';
+import {
+  View,
+  Animated,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+} from 'react-native';
+
 import { LearningPathBlob } from './LearningPathBlob';
 import { LockIcon, BookIcon, CheckIcon } from '../components/LessonIcons';
+import Colors from '../design/colors';
 
-type LessonStatus = 'locked' | 'in-progress' | 'completed';
+/* ---------- small divider component -------------------------------- */
+const PhaseDivider = ({ label }: { label: string }) => (
+  <View style={styles.dividerOuter}>
+    <Text style={styles.dividerText}>{label}</Text>
+  </View>
+);
 
-interface Lesson {
+/* ---------- types --------------------------------------------------- */
+type Status = 'locked' | 'in-progress' | 'completed';
+interface RowBlob {
+  kind: 'blob';
   id: number;
-  date: string;
   label: string;
   icon: React.ReactNode;
-  status: LessonStatus;
+  status: Status;
 }
+interface RowDivider {
+  kind: 'divider';
+  id: number;
+  phase: string;
+}
+type Row = RowBlob | RowDivider;
 
-const generateChronologicalLessons = (pastDays: number, futureDays: number): Lesson[] => {
+/* ---------- phases -------------------------------------------------- */
+const phases = ['Menstruation', 'Follicular', 'Ovulation', 'Luteal'];
+
+/* ---------- build 28 lessons + 4 dividers --------------------------- */
+const rows: Row[] = (() => {
   const today = new Date();
+  const arr: Row[] = [];
 
-  return Array.from({ length: pastDays + 1 + futureDays }, (_, i) => {
-    const dayOffset = i - pastDays;
-    const date = new Date(today);
-    date.setDate(today.getDate() + dayOffset);
+  phases.forEach((phase, phaseIdx) => {
+    arr.push({ kind: 'divider', id: phaseIdx * 1000, phase }); // divider id >= 1000
+    for (let i = 0; i < 7; i++) {
+      const globalIdx = phaseIdx * 7 + i;
+      const offset = globalIdx - 27;
+      const date = new Date(today);
+      date.setDate(today.getDate() + offset);
+      const label = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
-    const label = date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-    });
+      let status: Status = 'locked';
+      let icon: React.ReactNode = <LockIcon />;
+      if (offset < 0) { status = 'completed'; icon = <CheckIcon />; }
+      else if (offset === 0) { status = 'in-progress'; icon = <BookIcon />; }
 
-    let status: LessonStatus = 'locked';
-    let icon: React.ReactNode = <LockIcon />;
-
-    if (dayOffset < 0) {
-      status = 'completed';
-      icon = <CheckIcon />;
-    } else if (dayOffset === 0) {
-      status = 'in-progress';
-      icon = <BookIcon />;
+      arr.push({
+        kind: 'blob',
+        id: globalIdx + 1,
+        label,
+        icon,
+        status,
+      });
     }
-
-    return {
-      id: i + 1,
-      date: date.toISOString(),
-      label,
-      icon,
-      status,
-    };
   });
-};
+  return arr;
+})();
 
-const lessons = generateChronologicalLessons(89, 1); // 89 past, today, 1 future
+/* ---------- helpers ------------------------------------------------- */
+const waveX = (idx: number, amp: number, per: number) =>
+  amp * Math.sin((2 * Math.PI * idx) / per);
 
+/* ---------- main component ----------------------------------------- */
 export const LearningPath = () => {
+  const { width } = useWindowDimensions();
+  const AMP = width * 0.25;
+  const PERIOD = 8;
+
+  const ITEM_H = 110;
+  const TOTAL_H = ITEM_H * rows.length;
+  const Q = TOTAL_H / 4;
+  const F = 40;
+
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const bgColor = scrollY.interpolate({
+    inputRange: [0, Q - F, Q + F, 2 * Q - F, 2 * Q + F, 3 * Q - F, 3 * Q + F, TOTAL_H],
+    outputRange: [
+      Colors.raspberry, Colors.raspberry,
+      Colors.weed,      Colors.weed,
+      Colors.green,     Colors.green,
+      Colors.red,       Colors.red,
+    ],
+    extrapolate: 'clamp',
+  });
+
   return (
-    <FlatList
-      data={lessons}               // ordered oldest → future
-      inverted                     // render from bottom up
-      keyExtractor={(item) => item.id.toString()}
-      contentContainerStyle={styles.listContainer}
-      renderItem={({ item, index }) => (
-        <View
-          style={[
-            styles.blobWrapper,
-            {
-              marginLeft: index % 2 === 0 ? 40 : undefined,
-              marginRight: index % 2 !== 0 ? 40 : undefined,
-              alignSelf: index % 2 === 0 ? 'flex-start' : 'flex-end',
-            },
-          ]}
-        >
-          <LearningPathBlob
-            status={item.status}
-            icon={item.icon}
-            label={item.label}
-          />
-        </View>
-      )}
-    />
+    <View style={{ flex: 1 }}>
+      <Animated.View style={[StyleSheet.absoluteFill, { backgroundColor: bgColor, opacity: 0.3 }]} />
+      <Animated.FlatList
+        data={rows}
+        inverted
+        keyExtractor={(row) => String(row.id)}
+        contentContainerStyle={styles.container}
+        scrollEventThrottle={16}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+          useNativeDriver: false,
+        })}
+        renderItem={({ item, index }) => {
+          if (item.kind === 'divider') {
+            return <PhaseDivider label={`${item.phase} Phase`} />;
+          }
+
+          return (
+            <View
+              style={[
+                styles.blobWrapper,
+                { transform: [{ translateX: waveX(index, AMP, PERIOD) }] },
+              ]}
+            >
+              <LearningPathBlob status={item.status} icon={item.icon} label={item.label} />
+            </View>
+          );
+        }}
+      />
+    </View>
   );
 };
 
+/* ---------- styles -------------------------------------------------- */
 const styles = StyleSheet.create({
-  listContainer: {
-    paddingVertical: 20,
-  },
+  container: { paddingVertical: 12 },
   blobWrapper: {
-    marginVertical: 10,
-    width: '75%',
-    justifyContent: 'center',
+    alignSelf: 'center',
+    width: '70%',
+    marginVertical: 12,
+  },
+  dividerOuter: {
+    alignSelf: 'center',
+    width: '85%',
+    paddingVertical: 20,
+    paddingHorizontal: 24,
+    marginVertical: 30,
+    borderRadius: 40,
+    backgroundColor: Colors.red,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.12,
+    shadowRadius: 4,
+  },
+  dividerText: {
+    color: '#fff',
+    fontSize: 24,
+    fontWeight: 'bold',
   },
 });
