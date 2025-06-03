@@ -7,14 +7,17 @@ const {PedometerModule} = NativeModules;
 
 export const TrackerManager: React.FC = () => {
   useEffect(() => {
-    // 1. Start iOS native activity tracking
+    if (!PedometerModule) {
+      console.warn('[TrackerManager] PedometerModule is undefined. NativeEventEmitter cannot be initialized.');
+      return;
+    }
+
     try {
       PedometerModule.startActivityUpdates();
     } catch (e) {
       console.warn('[TrackerManager] startActivityUpdates failed:', e);
     }
 
-    // 2. Native Module Listener
     const pedometerEmitter = new NativeEventEmitter(PedometerModule);
     const activityListener = pedometerEmitter.addListener(
       'ActivityUpdate',

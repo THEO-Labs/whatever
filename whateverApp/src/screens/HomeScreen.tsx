@@ -3,6 +3,7 @@ import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigation/AppNavigator';
 import {LearningPathBlob} from '../components/LearningPathBlob';
+import {TrackerManager} from '../utils/BackgroundTracker';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -16,27 +17,29 @@ const blobs = [
 
 export default function HomeScreen({navigation}: Props) {
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Profile')}
-        style={styles.profileButton}>
-        <Text style={styles.profileText}>Profile</Text>
-      </TouchableOpacity>
-
-      <Text style={styles.title}>Learning Path</Text>
-      <View style={styles.path}>
-        {blobs.map((blob, index) => (
-          <View key={index} style={styles.blobWrapper}>
-            <LearningPathBlob
-              icon={blob.icon}
-              label={blob.label}
-              status={blob.status as any}
-            />
-            {index < blobs.length - 1 && <View style={styles.connector} />}
-          </View>
-        ))}
-      </View>
-    </ScrollView>
+    <View style={{flex: 1}}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Profile')}
+          style={styles.profileButton}>
+          <Text style={styles.profileText}>Profile</Text>
+        </TouchableOpacity>
+        <TrackerManager />
+        <Text style={styles.title}>Learning Path</Text>
+        <View style={styles.path}>
+          {blobs.map((blob, index) => (
+            <View key={index} style={styles.blobWrapper}>
+              <LearningPathBlob
+                icon={blob.icon}
+                label={blob.label}
+                status={blob.status as any}
+              />
+              {index < blobs.length - 1 && <View style={styles.connector} />}
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+    </View>
   );
 }
 

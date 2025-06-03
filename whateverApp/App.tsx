@@ -5,7 +5,6 @@ import AppNavigator from './src/navigation/AppNavigator';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {calculateDailyActivityScores} from './src/utils/calculateActivityScore.ts';
-import {TrackerManager} from './src/utils/BackgroundTracker';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -18,7 +17,6 @@ function App(): React.JSX.Element {
 
   return (
     <NavigationContainer>
-      <TrackerManager />
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={isDarkMode ? Colors.darker : Colors.lighter}
