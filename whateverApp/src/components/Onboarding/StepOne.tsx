@@ -46,7 +46,7 @@ export default function StepOne({
           weight,
         }),
       );
-      next(); // gehe zum nächsten Schritt
+      next();
     } catch (err) {
       console.error('Fehler beim Speichern der Onboarding-Daten:', err);
     }

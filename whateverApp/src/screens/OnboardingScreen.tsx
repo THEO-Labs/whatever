@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import {Button, Text, TextInput, View} from 'react-native';
+import {Button, Text, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigation/AppNavigator.tsx';
 import LinearGradient from 'react-native-linear-gradient';
 import StepOne from '../components/Onboarding/StepOne.tsx';
+import StepTwo from '../components/Onboarding/StepTwo.tsx';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Onboarding'>;
 
@@ -24,9 +25,8 @@ export default function OnboardingScreen({navigation}: Props) {
   return (
     <LinearGradient
       colors={[
-        'rgba(187, 217, 173, 0.6)',
-        'rgba(19, 64, 22, 0.6)',
-        'rgba(242, 94, 94, 0.5)',
+        'rgba(187, 217, 173, 0.9)',
+        'rgba(19, 64, 22, 0.9)',
       ]}
       style={{flex: 1, padding: 0, justifyContent: 'center'}}>
       {step === 0 && (
@@ -36,17 +36,9 @@ export default function OnboardingScreen({navigation}: Props) {
       )}
 
       {step === 1 && (
-        <>
-          <Text>Step 2: Health Data</Text>
-          <TextInput
-            placeholder="Alter"
-            value={age}
-            onChangeText={setAge}
-            keyboardType="numeric"
-          />
-          <Button title="Zurück" onPress={back} />
-          <Button title="Weiter" onPress={next} />
-        </>
+        <View style={{flex: 1, padding: 20}}>
+          <StepTwo next={next} back={back} />
+        </View>
       )}
 
       {step === 2 && (
