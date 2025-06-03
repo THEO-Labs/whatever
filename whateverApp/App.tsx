@@ -26,6 +26,8 @@ export default function App() {
     return null;
   }
 
+
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
