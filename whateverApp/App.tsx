@@ -1,15 +1,24 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StatusBar, useColorScheme} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import AppNavigator from './src/navigation/AppNavigator';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {calculateDailyActivityScores} from './src/utils/calculateActivityScore.ts';
+import {TrackerManager} from './src/utils/BackgroundTracker';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
+  useEffect(() => {
+    calculateDailyActivityScores().then(scores => {
+      console.log('Tages-Score:', scores);
+    });
+  }, []);
+
   return (
     <NavigationContainer>
+      <TrackerManager />
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={isDarkMode ? Colors.darker : Colors.lighter}
