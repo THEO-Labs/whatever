@@ -1,31 +1,32 @@
 import React, {useEffect} from 'react';
-import {StatusBar, useColorScheme} from 'react-native';
+import {LogBox} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import AppNavigator from './src/navigation/AppNavigator';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {calculateDailyActivityScores} from './src/utils/calculateActivityScore.ts';
+import {TrackerManager} from './src/utils/BackgroundTracker';
+import {calculateDailyActivityScores} from './src/utils/calculateActivityScore';
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+LogBox.ignoreLogs(['new NativeEventEmitter']); // optional
 
+const App: React.FC = () => {
   useEffect(() => {
-    calculateDailyActivityScores().then(scores => {
-      console.log('Tages-Score:', scores);
-    });
+    const interval = setInterval(() => {
+      calculateDailyActivityScores().then(scores => {
+        console.log('Tages-Score (alle 15s):', scores);
+      });
+    }, 15_000);
+
+    // Clean-up bei Unmount
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <NavigationContainer>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={isDarkMode ? Colors.darker : Colors.lighter}
-      />
-      <SafeAreaView style={{flex: 1, backgroundColor: isDarkMode ? Colors.black : Colors.white}}>
+    <>
+      <TrackerManager />
+      <NavigationContainer>
         <AppNavigator />
-      </SafeAreaView>
-    </NavigationContainer>
+      </NavigationContainer>
+    </>
   );
-}
+};
 
 export default App;
