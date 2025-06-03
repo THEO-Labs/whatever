@@ -42,9 +42,9 @@ export default function App() {
           setCurrentRoute(navigationRef.getCurrentRoute()?.name);
         }}
       >
-        <SafeAreaView style={styles.navigator}>
+        <View style={styles.navigator}>
           <AppNavigator initialRoute={initialRoute} />
-        </SafeAreaView>
+        </View>
       </NavigationContainer>
     </View>
   );
