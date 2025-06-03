@@ -1,11 +1,12 @@
 import React from 'react';
 import {
   Animated,
-  Button,
   Image,
   ScrollView,
+  StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -53,24 +54,39 @@ export default function StepOne({
   };
 
   return (
-    <ScrollView contentContainerStyle={{flexGrow: 1}}>
-      <View style={{flex: 1, justifyContent: 'center', padding: 24}}>
-        {/* Logo */}
-        <View style={{alignItems: 'center', marginBottom: 24}}>
-          <Image
-            source={require('../../assets/pictures/logo.png')}
-            style={{
-              width: 140,
-              height: 140,
-              borderRadius: 30,
-              resizeMode: 'contain',
-            }}
-          />
-        </View>
+    <ScrollView
+      contentContainerStyle={{
+        flexGrow: 1,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 30,
+        gap: 10,
+        alignContent: 'center',
+      }}>
+      {/* Logo */}
+      <View style={{alignItems: 'center', marginBottom: 24}}>
+        <Image
+          source={require('../../assets/pictures/logo.png')}
+          style={{
+            width: 140,
+            height: 140,
+            borderRadius: 30,
+            resizeMode: 'contain',
+          }}
+        />
+      </View>
 
-        <WelcomeText />
+      <WelcomeText />
 
-        {/* Name */}
+      {/* Name */}
+      <View
+        style={{
+          padding: 10,
+          borderRadius: 15,
+          borderColor: '#134016',
+          borderWidth: 2,
+          minWidth: '95%',
+        }}>
         <Text style={{marginBottom: 8, fontWeight: '500', color: '#fff'}}>
           Wie dürfen wir dich nennen?
         </Text>
@@ -84,16 +100,23 @@ export default function StepOne({
             padding: 12,
             borderRadius: 10,
             marginBottom: 20,
+            textAlignVertical: 'center',
           }}
         />
-
-        {/* Alter */}
+      </View>
+      {/* Alter */}
+      <View
+        style={{
+          padding: 10,
+          borderRadius: 15,
+          borderColor: '#134016',
+          borderWidth: 2,
+          minWidth: '95%',
+        }}>
         <Text
           style={{
-            marginBottom: 8,
             fontWeight: '500',
             color: '#fff',
-            marginTop: 20,
           }}>
           Verrätst du uns dein Alter?
         </Text>
@@ -113,14 +136,20 @@ export default function StepOne({
             shortStepColor="#134016"
           />
         </View>
-
-        {/* Gewicht */}
+      </View>
+      {/* Gewicht */}
+      <View
+        style={{
+          padding: 10,
+          borderRadius: 15,
+          borderColor: '#134016',
+          borderWidth: 2,
+          minWidth: '95%',
+        }}>
         <Text
           style={{
-            marginBottom: 8,
             fontWeight: '500',
             color: '#fff',
-            marginTop: 10,
           }}>
           Verrätst du uns dein aktuelles Gewicht?
         </Text>
@@ -140,14 +169,20 @@ export default function StepOne({
             shortStepColor="#134016"
           />
         </View>
-
-        {/* Größe */}
+      </View>
+      {/* Größe */}
+      <View
+        style={{
+          padding: 10,
+          borderRadius: 15,
+          borderColor: '#134016',
+          borderWidth: 2,
+          minWidth: '95%',
+        }}>
         <Text
           style={{
-            marginBottom: 8,
             fontWeight: '500',
             color: '#fff',
-            marginTop: 10,
           }}>
           Und jetzt fehlt nur noch deine Körpergröße?
         </Text>
@@ -167,10 +202,35 @@ export default function StepOne({
             shortStepColor="#134016"
           />
         </View>
-
-        {/* Weiter */}
-        <Button title="Weiter" onPress={handleNext} disabled={!name} />
       </View>
+      {/* Weiter */}
+      <TouchableOpacity
+        style={styles.nextButton}
+        onPress={handleNext}
+        activeOpacity={0.8}
+        disabled={name.length < 2}>
+        <Text style={styles.nextButtonText}>Weiter</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
+const styles = StyleSheet.create({
+  nextButton: {
+    backgroundColor: '#ffffff',
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    borderRadius: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 4},
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    marginTop: 20,
+  },
+  nextButtonText: {
+    color: '#134016',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+});

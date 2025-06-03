@@ -20,6 +20,10 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>NSHealthShareUsageDescription</key>
+    <string>Wir benötigen Zugriff auf deine Schrittzahl, um dein Bewegungspensum zu analysieren.</string>
+    <key>NSUserNotificationUsageDescription</key>
+    <string>Wir möchten dir Erinnerungen senden.</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>

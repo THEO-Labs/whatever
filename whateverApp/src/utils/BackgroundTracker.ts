@@ -22,7 +22,6 @@ export const TrackerManager: React.FC = () => {
     const activityListener = pedometerEmitter.addListener(
       'ActivityUpdate',
       async event => {
-        console.log('[Native Activity]', event);
         await saveToBuffer({
           type: 'native-activity',
           data: event,
@@ -33,7 +32,6 @@ export const TrackerManager: React.FC = () => {
 
     // 3. BackgroundGeolocation Activity Listener
     BackgroundGeolocation.onActivityChange(async activity => {
-      console.log('[Geolocation Activity]', activity);
       await saveToBuffer({
         type: 'geo-activity',
         data: activity,
