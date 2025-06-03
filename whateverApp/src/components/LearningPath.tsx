@@ -1,8 +1,12 @@
 import React from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
+
 import { LearningPathBlob } from './LearningPathBlob';
 import { LockIcon, BookIcon, CheckIcon } from '../components/LessonIcons';
 
+/* ------------------------------------------------------------------ */
+/* ❑  Types                                                           */
+/* ------------------------------------------------------------------ */
 type LessonStatus = 'locked' | 'in-progress' | 'completed';
 
 interface Lesson {
@@ -13,7 +17,13 @@ interface Lesson {
   status: LessonStatus;
 }
 
-const generateChronologicalLessons = (pastDays: number, futureDays: number): Lesson[] => {
+/* ------------------------------------------------------------------ */
+/* ❑  Helper: build chronological lessons                             */
+/* ------------------------------------------------------------------ */
+const generateChronologicalLessons = (
+  pastDays: number,
+  futureDays: number,
+): Lesson[] => {
   const today = new Date();
 
   return Array.from({ length: pastDays + 1 + futureDays }, (_, i) => {
@@ -47,44 +57,58 @@ const generateChronologicalLessons = (pastDays: number, futureDays: number): Les
   });
 };
 
-const lessons = generateChronologicalLessons(89, 1); // 89 past, today, 1 future
+/* ------------------------------------------------------------------ */
+/* ❑  Wave helper                                                     */
+/* ------------------------------------------------------------------ */
+const waveOffset = (index: number, amplitude: number, period: number) =>
+  amplitude * Math.sin((2 * Math.PI * index) / period);
 
+/* ------------------------------------------------------------------ */
+/* ❑  Data                                                            */
+/* ------------------------------------------------------------------ */
+const lessons = generateChronologicalLessons(89, 1); // 89 past + today + 1 future
+
+/* ------------------------------------------------------------------ */
+/* ❑  Component                                                       */
+/* ------------------------------------------------------------------ */
 export const LearningPath = () => {
+  /* tweak these two numbers for a tighter/looser meander */
+  const AMPLITUDE = 80; // px left ⟷ right from the centre line
+  const PERIOD = 8;     // items per full sine wave
+
   return (
     <FlatList
-      data={lessons}               // ordered oldest → future
-      inverted                     // render from bottom up
-      keyExtractor={(item) => item.id.toString()}
+      data={lessons}            /* ordered oldest → future            */
+      inverted                  /* renders bottom-up (today near bottom) */
+      keyExtractor={item => item.id.toString()}
       contentContainerStyle={styles.listContainer}
-      renderItem={({ item, index }) => (
-        <View
-          style={[
-            styles.blobWrapper,
-            {
-              marginLeft: index % 2 === 0 ? 40 : undefined,
-              marginRight: index % 2 !== 0 ? 40 : undefined,
-              alignSelf: index % 2 === 0 ? 'flex-start' : 'flex-end',
-            },
-          ]}
-        >
-          <LearningPathBlob
-            status={item.status}
-            icon={item.icon}
-            label={item.label}
-          />
-        </View>
-      )}
+      renderItem={({ item, index }) => {
+        const shiftX = waveOffset(index, AMPLITUDE, PERIOD);
+
+        return (
+          <View style={[styles.blobWrapper, { transform: [{ translateX: shiftX }] }]}>
+            <LearningPathBlob
+              status={item.status}
+              icon={item.icon}
+              label={item.label}
+            />
+          </View>
+        );
+      }}
     />
   );
 };
 
+/* ------------------------------------------------------------------ */
+/* ❑  Styles                                                          */
+/* ------------------------------------------------------------------ */
 const styles = StyleSheet.create({
   listContainer: {
-    paddingVertical: 20,
+    paddingVertical: 6,
   },
   blobWrapper: {
+    alignSelf: 'center',   // base position: horizontal centre
+    width: '75%',          // blob width
     marginVertical: 10,
-    width: '75%',
-    justifyContent: 'center',
   },
 });

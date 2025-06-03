@@ -22,7 +22,7 @@ export const LearningPathBlob: React.FC<LearningPathBlobProps> = ({
     completed: styles.completed,
   };
 
-  
+
 
   const renderIcon = typeof icon === 'string'
     ? <Text style={styles.icon}>{icon}</Text>
@@ -44,7 +44,6 @@ export const LearningPathBlob: React.FC<LearningPathBlobProps> = ({
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    marginVertical: 8,
   },
   blob: {
     width: 100,
@@ -60,7 +59,7 @@ const styles = StyleSheet.create({
   },
 
   locked: {
-    backgroundColor: "#D1D5DB", 
+    backgroundColor: "#D1D5DB",
     borderWidth: 2,
     borderColor: "#9CA3AF",
     shadowColor: "#6B7280",
@@ -82,7 +81,7 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: 32,
   },
- 
+
   label: {
     marginTop: 6,
     fontSize: 12,
