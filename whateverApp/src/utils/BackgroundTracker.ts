@@ -6,6 +6,13 @@ import BackgroundGeolocation from 'react-native-background-geolocation';
 const {PedometerModule} = NativeModules;
 
 export const TrackerManager: React.FC = () => {
+  console.log('✅ TrackerManager RENDERED');
+
+  useEffect(() => {
+    console.log('🧪 useEffect executed');
+    console.log('🧪 NativeModules:', NativeModules);
+    console.log('🧪 NativeModules.PedometerModule:', NativeModules.PedometerModule);
+  }, []);
   useEffect(() => {
     if (!PedometerModule) {
       console.warn('[TrackerManager] PedometerModule is undefined. NativeEventEmitter cannot be initialized.');
