@@ -64,26 +64,6 @@ export default function HomeScreen({navigation}: Props) {
 
   return (
     <View>
-      <Text>Home Screen</Text>
-      <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-        <ActivityCircle
-          value={activityScore}
-          max={100}
-          label="Activityscore"
-          color="#84B3DC"
-        />
-        <ActivityCircle value={restScore} max={100} label="Rest" color="#00D46F" />
-        <ActivityCircle
-          value={steps}
-          max={10000}
-          label="Steps"
-          color="#3F85E2"
-        />
-      </View>
-      <Button
-        title="Go to Detail"
-        onPress={() => navigation.navigate('Profile')}
-      />
       <LearningPath />
     </View>
   );
