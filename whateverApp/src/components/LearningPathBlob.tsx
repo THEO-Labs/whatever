@@ -22,11 +22,7 @@ export const LearningPathBlob: React.FC<LearningPathBlobProps> = ({
     completed: styles.completed,
   };
 
-  const overlayIcon = {
-    locked: <Text style={{ fontSize: 18 }}>🔒</Text>,
-    "in-progress": null,
-    completed: <Text style={{ fontSize: 18 }}>✔️</Text>,
-  };
+  
 
   const renderIcon = typeof icon === 'string'
     ? <Text style={styles.icon}>{icon}</Text>
@@ -37,11 +33,7 @@ export const LearningPathBlob: React.FC<LearningPathBlobProps> = ({
       <View style={styles.container}>
         <View style={[styles.blob, statusStyle[status]]}>
           {renderIcon}
-          {overlayIcon[status] && (
-            <View style={styles.overlay}>
-              {overlayIcon[status]}
-            </View>
-          )}
+          
         </View>
         {label && <Text style={styles.label}>{label}</Text>}
       </View>
