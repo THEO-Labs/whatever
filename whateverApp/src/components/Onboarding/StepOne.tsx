@@ -169,7 +169,7 @@ export default function StepOne({
         </View>
 
         {/* Weiter */}
-        <Button title="Weiter" onPress={handleNext} />
+        <Button title="Weiter" onPress={handleNext} disabled={!name} />
       </View>
     </ScrollView>
   );
