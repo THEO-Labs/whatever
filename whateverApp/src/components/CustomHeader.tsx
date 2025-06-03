@@ -1,89 +1,55 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+// CustomHeader.tsx
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { ActivityCircle } from './whoopCircles';
 import Colors from '../design/colors';
+import { ArrowLeft, User } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
 
-const UserIcon = () => <View><Text style={{fontSize: 24}}>👤</Text></View>;
-const BackIcon = () => <View><Text style={{fontSize: 24}}>⬅️</Text></View>;
-
-export const CustomHeader: React.FC = () => {
-  const [steps, setSteps] = useState<number>(0);
-  const [activityScore, setActivityScore] = useState<number>(0);
-  const [restScore, setRestScore] = useState<number>(0);
-
-  const navigation = useNavigation<any>();
-  const currentRoute = navigation?.getState()?.routes?.[navigation.getState().index]?.name ?? '';
+export const CustomHeader = ({ currentRoute, navigationRef }: { currentRoute?: string; navigationRef: any }) => {
+  const [focus, setFocus] = useState(0);
+  const [energy, setEnergy] = useState(0);
+  const [mood, setMood] = useState(0);
 
   useEffect(() => {
-    const loadSteps = async () => {
+    const loadScores = async () => {
       try {
-        const bufferRaw = await AsyncStorage.getItem('trackBuffer');
-        const buffer = JSON.parse(bufferRaw || '[]');
+        const raw = await AsyncStorage.getItem('dailyActivityScores');
+        const scores = JSON.parse(raw || '{}');
         const today = new Date().toISOString().split('T')[0];
-        let total = 0;
-
-        for (const e of buffer) {
-          if (
-            e.type === 'steps' &&
-            new Date(e.timestamp).toISOString().startsWith(today)
-          ) {
-            total += e.data?.steps ?? 0;
-          }
-        }
-
-        setSteps(total);
+        const todayScores = scores[today] || {};
+        setFocus(todayScores.activityScore ?? 0);
+        setEnergy(todayScores.restScore ?? 0);
+        setMood(todayScores.steps ?? 0);
       } catch (e) {
-        console.warn('[CustomHeader] Error loading steps:', e);
+        console.warn('[CustomHeader] Failed to load scores:', e);
       }
     };
 
-    const getActivityScores = async () => {
-      try {
-        const rawScores = await AsyncStorage.getItem('dailyActivityScores');
-        const parsed = JSON.parse(rawScores || '{}');
-        const today = new Date().toISOString().split('T')[0];
-        setActivityScore(parsed[today]?.activityScore ?? 0);
-        setRestScore(parsed[today]?.restScore ?? 0);
-      } catch (e) {
-        console.warn('[CustomHeader] Error loading scores:', e);
-      }
-    };
-
-    loadSteps();
-    getActivityScores();
-
-    const interval = setInterval(() => {
-      loadSteps();
-      getActivityScores();
-    }, 15000);
-
+    loadScores();
+    const interval = setInterval(loadScores, 15000);
     return () => clearInterval(interval);
   }, []);
 
+  const goBackOrProfile = () => {
+    if (currentRoute === 'Profile') {
+      navigationRef.navigate('Home');
+    } else {
+      navigationRef.navigate('Profile');
+    }
+  };
+
   return (
     <View style={styles.header}>
-      <TouchableOpacity
-        onPress={() => {
-          if (currentRoute === 'Profile') {
-            navigation.navigate('Home' as never);
-          } else {
-            navigation.navigate('Profile');
-          }
-        }}
-        style={styles.profileIcon}
-      >
-        {currentRoute === 'Profile' ? (
-          <BackIcon />
-        ) : (
-          <UserIcon />
-        )}
-      </TouchableOpacity>
+      <View style={styles.leftIcon}>
+        <TouchableOpacity onPress={goBackOrProfile}>
+          {currentRoute === 'Profile' ? <ArrowLeft color={Colors.green} /> : <User color={Colors.green} />}
+        </TouchableOpacity>
+      </View>
       <View style={styles.circles}>
-        <ActivityCircle value={activityScore} max={100} label="Activity" color={Colors.lime} />
-        <ActivityCircle value={restScore} max={100} label="Rest" color={Colors.red} />
-        <ActivityCircle value={steps} max={10000} label="Steps" color={Colors.green} />
+        <ActivityCircle value={focus} max={100} label="Focus" color={Colors.lime} />
+        <ActivityCircle value={energy} max={100} label="Energy" color={Colors.red} />
+        <ActivityCircle value={mood} max={10000} label="Mood" color={Colors.green} />
       </View>
     </View>
   );
@@ -97,22 +63,15 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.weed,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
-    alignItems: 'center',
   },
-  title: {
-    fontSize: 20,
-    fontWeight: '700',
-    marginBottom: 8,
-    color: Colors.green,
+  leftIcon: {
+    position: 'absolute',
+    top: 50,
+    left: 16,
+    zIndex: 10,
   },
   circles: {
     flexDirection: 'row',
     justifyContent: 'center',
-  },
-  profileIcon: {
-    position: 'absolute',
-    top: 55,
-    right: 20,
-    zIndex: 10,
   },
 });

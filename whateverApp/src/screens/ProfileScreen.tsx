@@ -1,11 +1,10 @@
 import React from 'react';
-import {View} from 'react-native';
-import {CustomHeader} from '../components/CustomHeader.tsx';
+import {View, Text} from 'react-native';
 
 export default function ProfileScreen() {
   return (
     <View>
-      <CustomHeader />
+      <Text>Profile Screen</Text>
     </View>
   );
 }
