@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AppNavigator, {RootStackParamList} from './AppNavigator.tsx';
 import {calculateDailyActivityScores} from '../utils/calculateActivityScore.ts';
+import {TrackerManager} from '../utils/BackgroundTracker.ts';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -37,6 +38,7 @@ export default function Main() {
   return (
     <NavigationContainer>
       <AppNavigator initialRoute={initialRoute} />
+      <TrackerManager />
     </NavigationContainer>
   );
 }

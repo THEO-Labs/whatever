@@ -14,6 +14,7 @@ export const TrackerManager: React.FC = () => {
 
     try {
       PedometerModule.startActivityUpdates();
+      console.log('[TrackerManager] Pedometer activity updates started successfully.');
     } catch (e) {
       console.warn('[TrackerManager] startActivityUpdates failed:', e);
     }
