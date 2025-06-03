@@ -9,9 +9,14 @@ LogBox.ignoreLogs(['new NativeEventEmitter']); // optional
 
 const App: React.FC = () => {
   useEffect(() => {
-    calculateDailyActivityScores().then(scores => {
-      console.log('Tages-Score:', scores);
-    });
+    const interval = setInterval(() => {
+      calculateDailyActivityScores().then(scores => {
+        console.log('Tages-Score (alle 15s):', scores);
+      });
+    }, 15_000);
+
+    // Clean-up bei Unmount
+    return () => clearInterval(interval);
   }, []);
 
   return (

@@ -47,7 +47,6 @@ export const ActivityCircle: React.FC<Props> = ({value, max, label, color}) => {
       {/* Zahl/Wert in der Mitte */}
       <Text style={styles.valueText}>
         {Number.isInteger(value) ? value : value.toFixed(1)}
-        {max === 100 ? ' %' : ''}
       </Text>
       {/* Label unten */}
       <Text style={styles.label}>{label.toUpperCase()}</Text>

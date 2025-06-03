@@ -9,6 +9,15 @@ const activityWeights: Record<string, number> = {
   unknown: 0,
 };
 
+const restWeights: Record<string, number> = {
+  stationary: 1.5,
+  walking: -0.5,
+  running: -1,
+  cycling: -0.7,
+  automotive: 0.2,
+  unknown: 0,
+};
+
 const confidenceWeights: Record<string, number> = {
   low: 0.5,
   medium: 1.0,
@@ -21,13 +30,14 @@ function formatDate(timestamp: number): string {
 }
 
 export const calculateDailyActivityScores = async (): Promise<
-  Record<string, number>
+  Record<string, {activityScore: number; restScore: number}>
 > => {
   try {
     const raw = await AsyncStorage.getItem('trackBuffer');
     const events = JSON.parse(raw || '[]');
 
-    const dailyScores: Record<string, number> = {};
+    const dailyActivity: Record<string, number> = {};
+    const dailyRest: Record<string, number> = {};
 
     for (const e of events) {
       if (e.type !== 'native-activity') continue;
@@ -36,28 +46,42 @@ export const calculateDailyActivityScores = async (): Promise<
       const activity = e.data?.activity ?? 'unknown';
       const confidence = e.data?.confidence ?? 'medium';
 
-      const base = activityWeights[activity] ?? 0;
+      const activityBase = activityWeights[activity] ?? 0;
+      const restBase = restWeights[activity] ?? 0;
       const factor = confidenceWeights[confidence] ?? 1;
 
-      dailyScores[date] = (dailyScores[date] || 0) + base * factor;
+      dailyActivity[date] = (dailyActivity[date] || 0) + activityBase * factor;
+      dailyRest[date] = (dailyRest[date] || 0) + restBase * factor;
     }
 
-    // Normalisieren auf Skala 0–100 mit Nachkommastellen
-    const normalizedScores: Record<string, number> = {};
-    for (const date in dailyScores) {
-      const rawScore = dailyScores[date];
-      const normalized = (rawScore / 30) * 100;
-      normalizedScores[date] = Math.min(parseFloat(normalized.toFixed(2)), 100);
+    // Normalisieren
+    const scores: Record<string, {activityScore: number; restScore: number}> =
+      {};
+
+    for (const date of Object.keys(dailyActivity)) {
+      const rawActivity = dailyActivity[date];
+      const rawRest = dailyRest[date];
+
+      const activityScore = Math.min(
+        parseFloat(((rawActivity / 30) * 100).toFixed(2)),
+        100,
+      );
+      const restScore = Math.min(
+        Math.max(parseFloat(((rawRest / 20) * 100).toFixed(2)), 0),
+        100,
+      );
+
+      scores[date] = {
+        activityScore,
+        restScore,
+      };
     }
 
-    await AsyncStorage.setItem(
-      'dailyActivityScores',
-      JSON.stringify(normalizedScores),
-    );
+    await AsyncStorage.setItem('dailyActivityScores', JSON.stringify(scores));
 
-    return normalizedScores;
+    return scores;
   } catch (err) {
-    console.warn('Fehler beim Berechnen der Aktivitäts-Scores:', err);
+    console.warn('Fehler beim Berechnen der Scores:', err);
     return {};
   }
 };
