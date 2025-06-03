@@ -8,6 +8,8 @@ import AppNavigator from './src/navigation/AppNavigator';
 import { CustomHeader } from './src/components/CustomHeader';
 
 export default function App() {
+  // Clear asnyc storage for dev:
+  AsyncStorage.clear();
   const isDarkMode = useColorScheme() === 'dark';
   const navigationRef = useNavigationContainerRef();
   const [currentRoute, setCurrentRoute] = useState<string>();
