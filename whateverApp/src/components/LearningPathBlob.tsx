@@ -2,9 +2,10 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 interface LearningPathBlobProps {
-  status: "locked" | "in-progress" | "completed";
-  icon: React.ReactNode;
+  status: 'locked' | 'in-progress' | 'completed';
+  icon: React.ReactNode | string;
   label?: string;
+  onPress?: () => void;
 }
 
 export const LearningPathBlob: React.FC<LearningPathBlobProps> = ({
