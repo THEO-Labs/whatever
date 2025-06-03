@@ -67,17 +67,17 @@ const styles = StyleSheet.create({
 
   },
   inProgress: {
-    backgroundColor: Colors.raspberry,
+    backgroundColor: Colors.red,
     borderWidth: 2,
-    borderColor: Colors.red,
-    shadowColor: "#FCA5A5",
+    borderColor: "#B91C1C",
+    shadowColor: "#991B1B",
 
   },
   completed: {
-    backgroundColor: '#BBF7D0', 
+    backgroundColor: Colors.lime,
     borderWidth: 2,
-    borderColor: Colors.red,
-    shadowColor: "#FCA5A5",
+    borderColor: "#A8D13B",
+    shadowColor: "#7C9E2D",
   },
   icon: {
     fontSize: 32,
