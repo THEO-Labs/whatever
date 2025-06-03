@@ -1,17 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { StatusBar, useColorScheme, View, StyleSheet } from 'react-native';
-import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, {useEffect, useState} from 'react';
+import {
+  NativeModules,
+  StatusBar,
+  StyleSheet,
+  useColorScheme,
+  View,
+} from 'react-native';
+import {
+  NavigationContainer,
+  useNavigationContainerRef,
+} from '@react-navigation/native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import AppNavigator from './src/navigation/AppNavigator';
-import { CustomHeader } from './src/components/CustomHeader';
+import {calculateDailyActivityScores} from './src/utils/calculateActivityScore.ts';
+import {CustomHeader} from './src/components/CustomHeader';
+
+const {PedometerModule} = NativeModules;
 
 export default function App() {
   const isDarkMode = useColorScheme() === 'dark';
   const navigationRef = useNavigationContainerRef();
   const [currentRoute, setCurrentRoute] = useState<string>();
-  const [initialRoute, setInitialRoute] = useState<'Onboarding' | 'Home' | null>(null);
+  const [initialRoute, setInitialRoute] = useState<
+    'Onboarding' | 'Home' | null
+  >(null);
 
   // Determine initial screen based on onboarding
   useEffect(() => {
@@ -20,18 +34,55 @@ export default function App() {
       setInitialRoute(completed === 'true' ? 'Home' : 'Onboarding');
     })();
   }, []);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      calculateDailyActivityScores().catch(err => {
+        console.warn('[Recalc] Fehler beim Berechnen der Scores:', err);
+      });
+    }, 10_000);
+    return () => clearInterval(interval);
+  }, []);
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      if (
+        !PedometerModule ||
+        typeof PedometerModule.getTodaySteps !== 'function'
+      ) {
+        console.warn(
+          '[StepsPoller] PedometerModule.getTodaySteps nicht verfügbar.',
+        );
+        return;
+      }
+
+      try {
+        const steps = await PedometerModule.getTodaySteps();
+        const raw = await AsyncStorage.getItem('todayScores');
+        const existing = JSON.parse(raw || '{}');
+        const updated = {...existing, steps};
+        await AsyncStorage.setItem('todayScores', JSON.stringify(updated));
+      } catch (err) {
+        console.warn(
+          '[StepsPoller] Fehler beim Abrufen oder Speichern der Schritte:',
+          err,
+        );
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   if (!initialRoute) {
     return null;
   }
 
-
-
   return (
     <View style={styles.container}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       {currentRoute !== 'Onboarding' && (
-        <CustomHeader currentRoute={currentRoute} navigationRef={navigationRef} />
+        <CustomHeader
+          currentRoute={currentRoute}
+          navigationRef={navigationRef}
+        />
       )}
       <NavigationContainer
         ref={navigationRef}
@@ -40,8 +91,7 @@ export default function App() {
         }}
         onStateChange={() => {
           setCurrentRoute(navigationRef.getCurrentRoute()?.name);
-        }}
-      >
+        }}>
         <SafeAreaView style={styles.navigator}>
           <AppNavigator initialRoute={initialRoute} />
         </SafeAreaView>

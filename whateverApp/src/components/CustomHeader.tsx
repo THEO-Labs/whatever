@@ -1,13 +1,19 @@
 // CustomHeader.tsx
-import React, { useEffect, useState } from 'react';
-import { TrackerManager } from '../utils/BackgroundTracker';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { ActivityCircle } from './whoopCircles';
+import React, {useEffect, useState} from 'react';
+import {TrackerManager} from '../utils/BackgroundTracker';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import Colors from '../design/colors';
-import { ArrowLeft, User } from 'lucide-react-native';
+import {ArrowLeft, User} from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {ActivityCircle} from './whoopCircles.tsx';
 
-export const CustomHeader = ({ currentRoute, navigationRef }: { currentRoute?: string; navigationRef: any }) => {
+export const CustomHeader = ({
+  currentRoute,
+  navigationRef,
+}: {
+  currentRoute?: string;
+  navigationRef: any;
+}) => {
   const [focus, setFocus] = useState(0);
   const [energy, setEnergy] = useState(0);
   const [steps, setSteps] = useState(0);
@@ -16,13 +22,14 @@ export const CustomHeader = ({ currentRoute, navigationRef }: { currentRoute?: s
     const loadScores = async () => {
       try {
         const raw = await AsyncStorage.getItem('dailyActivityScores');
+        const todayScores2 = await AsyncStorage.getItem('todayScores');
+        const todayScores2Raw = JSON.parse(todayScores2 || '{}');
         const scores = JSON.parse(raw || '{}');
         const today = new Date().toISOString().split('T')[0];
         const todayScores = scores[today] || {};
-        setFocus(todayScores.activityScore ?? 0);
-        setEnergy(todayScores.restScore ?? 0);
-        setSteps(todayScores.steps ?? 0);
-        console.log(todayScores);
+        setFocus(todayScores.restScore ?? 0);
+        setEnergy(todayScores.activityScore ?? 0);
+        setSteps(todayScores2Raw.steps?.steps ?? 0);
       } catch (e) {
         console.warn('[CustomHeader] Failed to load scores:', e);
       }
@@ -58,9 +65,24 @@ export const CustomHeader = ({ currentRoute, navigationRef }: { currentRoute?: s
         </View>
       )}
       <View style={styles.circles}>
-        <ActivityCircle value={focus} max={100} label="Rest" color={Colors.lime} />
-        <ActivityCircle value={energy} max={100} label="Activity" color={Colors.red} />
-        <ActivityCircle value={steps} max={10000} label="Steps" color={Colors.green} />
+        <ActivityCircle
+          value={focus}
+          max={100}
+          label="Rest"
+          color={Colors.lime}
+        />
+        <ActivityCircle
+          value={energy}
+          max={100}
+          label="Activity"
+          color={Colors.red}
+        />
+        <ActivityCircle
+          value={steps}
+          max={10000}
+          label="Steps"
+          color={Colors.weed}
+        />
       </View>
     </View>
   );

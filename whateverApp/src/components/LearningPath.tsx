@@ -52,11 +52,11 @@ const lessons = generateChronologicalLessons(89, 1); // 89 past, today, 1 future
 export const LearningPath = () => {
   return (
     <FlatList
-      data={lessons}               // ordered oldest → future
-      inverted                     // render from bottom up
-      keyExtractor={(item) => item.id.toString()}
+      data={lessons} // ordered oldest → future
+      inverted
+      keyExtractor={item => item.id.toString()}
       contentContainerStyle={styles.listContainer}
-      renderItem={({ item, index }) => (
+      renderItem={({item, index}) => (
         <View
           style={[
             styles.blobWrapper,
@@ -65,8 +65,7 @@ export const LearningPath = () => {
               marginRight: index % 2 !== 0 ? 40 : undefined,
               alignSelf: index % 2 === 0 ? 'flex-start' : 'flex-end',
             },
-          ]}
-        >
+          ]}>
           <LearningPathBlob
             status={item.status}
             icon={item.icon}
