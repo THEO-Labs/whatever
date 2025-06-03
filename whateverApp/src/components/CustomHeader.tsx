@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const CustomHeader = ({ currentRoute, navigationRef }: { currentRoute?: string; navigationRef: any }) => {
   const [focus, setFocus] = useState(0);
   const [energy, setEnergy] = useState(0);
-  const [mood, setMood] = useState(0);
+  const [steps, setSteps] = useState(0);
 
   useEffect(() => {
     const loadScores = async () => {
@@ -21,7 +21,8 @@ export const CustomHeader = ({ currentRoute, navigationRef }: { currentRoute?: s
         const todayScores = scores[today] || {};
         setFocus(todayScores.activityScore ?? 0);
         setEnergy(todayScores.restScore ?? 0);
-        setMood(todayScores.steps ?? 0);
+        setSteps(todayScores.steps ?? 0);
+        console.log(todayScores);
       } catch (e) {
         console.warn('[CustomHeader] Failed to load scores:', e);
       }
@@ -57,9 +58,9 @@ export const CustomHeader = ({ currentRoute, navigationRef }: { currentRoute?: s
         </View>
       )}
       <View style={styles.circles}>
-        <ActivityCircle value={focus} max={100} label="Focus" color={Colors.lime} />
-        <ActivityCircle value={energy} max={100} label="Energy" color={Colors.red} />
-        <ActivityCircle value={mood} max={10000} label="Mood" color={Colors.green} />
+        <ActivityCircle value={focus} max={100} label="Rest" color={Colors.lime} />
+        <ActivityCircle value={energy} max={100} label="Activity" color={Colors.red} />
+        <ActivityCircle value={steps} max={10000} label="Steps" color={Colors.green} />
       </View>
     </View>
   );
