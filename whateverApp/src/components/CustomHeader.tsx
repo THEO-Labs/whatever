@@ -43,11 +43,19 @@ export const CustomHeader = ({ currentRoute, navigationRef }: { currentRoute?: s
   return (
     <View style={styles.header}>
       <TrackerManager />
-      <View style={styles.leftIcon}>
-        <TouchableOpacity onPress={goBackOrProfile}>
-          {currentRoute === 'Profile' ? <ArrowLeft color={Colors.green} /> : <User color={Colors.green} />}
-        </TouchableOpacity>
-      </View>
+      {currentRoute === 'Profile' ? (
+        <View style={styles.iconLeft}>
+          <TouchableOpacity onPress={goBackOrProfile}>
+            <ArrowLeft color={Colors.green} />
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={styles.iconRight}>
+          <TouchableOpacity onPress={goBackOrProfile}>
+            <User color={Colors.green} />
+          </TouchableOpacity>
+        </View>
+      )}
       <View style={styles.circles}>
         <ActivityCircle value={focus} max={100} label="Focus" color={Colors.lime} />
         <ActivityCircle value={energy} max={100} label="Energy" color={Colors.red} />
@@ -63,18 +71,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 2,
     backgroundColor: '#ffffff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomWidth: 0,
   },
-  leftIcon: {
+  iconLeft: {
     position: 'absolute',
     top: 55,
-    left: 20,
+    left: 15,
+    zIndex: 10,
+  },
+  iconRight: {
+    position: 'absolute',
+    top: 55,
+    right: 15,
     zIndex: 10,
   },
   circles: {
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: 20,
+    gap: 2,
   },
 });
