@@ -36,7 +36,7 @@ export const LearningPathBlob: React.FC<LearningPathBlobProps> = ({
     <Pressable onPress={onPress} disabled={status === 'locked'}>
       <View style={styles.container}>
         <View style={[styles.blob, statusStyle[status]]}>
-          <Text style={styles.icon}>{icon}</Text>
+          {renderIcon}
           {overlayIcon[status] && (
             <View style={styles.overlay}>
               {overlayIcon[status]}

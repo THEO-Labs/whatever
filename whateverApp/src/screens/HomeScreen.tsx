@@ -4,7 +4,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigation/AppNavigator';
 import {ActivityCircle} from '../components/whoopCircles.tsx';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LearningPathBlob } from '../components/LearningPathBlob.tsx';
+import { LearningPath } from '../components/LearningPath'; // adjust the path if needed
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -84,11 +84,7 @@ export default function HomeScreen({navigation}: Props) {
         title="Go to Detail"
         onPress={() => navigation.navigate('Profile')}
       />
-      <LearningPathBlob
-        status="in-progress"
-        icon={<Text>📘</Text>}
-        label="Learning Path"
-      />
+      <LearningPath />
     </View>
   );
 }
