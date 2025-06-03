@@ -1,5 +1,5 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import OnboardingScreen from '../screens/OnboardingScreen';
@@ -10,23 +10,27 @@ export type RootStackParamList = {
   Profile: undefined;
 };
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<RootStackParamList>();
 
 export default function AppNavigator({
-  initialRoute,
-}: {
+                                       initialRoute,
+                                     }: {
   initialRoute: keyof RootStackParamList;
 }) {
   return (
     <Stack.Navigator
       initialRouteName={initialRoute}
-      screenOptions={{headerShown: false}}>
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Stack.Screen name="Onboarding" component={OnboardingScreen} />
       <Stack.Screen
         name="Home"
         component={HomeScreen}
         options={{
-          gestureDirection: 'horizontal',
+          gestureDirection: 'horizontal-inverted',
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}
       />
       <Stack.Screen
@@ -34,6 +38,7 @@ export default function AppNavigator({
         component={ProfileScreen}
         options={{
           gestureDirection: 'horizontal',
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}
       />
     </Stack.Navigator>
