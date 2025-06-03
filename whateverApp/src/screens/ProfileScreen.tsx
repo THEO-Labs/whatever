@@ -1,51 +1,20 @@
 import React from 'react';
-import {Button, Image, StyleSheet, Text, View} from 'react-native';
+import {Button, Text, View, StyleSheet} from 'react-native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../navigation/AppNavigator';
 
-export default function ProfileScreen() {
+type Props = NativeStackScreenProps<RootStackParamList, 'Profile'>;
+
+export default function ProfileScreen({navigation}: Props) {
   return (
     <View style={styles.container}>
-      <Image
-        source={{uri: 'https://via.placeholder.com/120'}}
-        style={styles.avatar}
-      />
-      <Text style={styles.name}>Max Mustermann</Text>
-      <Text style={styles.email}>max@example.com</Text>
-
-      <View style={styles.section}>
-        <Button title="Bearbeiten" onPress={() => {}} />
-      </View>
-
-      <View style={styles.section}>
-        <Button title="Abmelden" onPress={() => {}} color="red" />
-      </View>
+      <Text style={styles.text}>Profile Screen</Text>
+      <Button title="Back to Home" onPress={() => navigation.navigate('Home')} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    padding: 24,
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  avatar: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    marginBottom: 16,
-  },
-  name: {
-    fontSize: 22,
-    fontWeight: '600',
-  },
-  email: {
-    fontSize: 16,
-    color: 'gray',
-    marginBottom: 24,
-  },
-  section: {
-    width: '80%',
-    marginTop: 12,
-  },
+  container: {flex: 1, justifyContent: 'center', alignItems: 'center'},
+  text: {fontSize: 24, marginBottom: 20},
 });
