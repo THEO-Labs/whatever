@@ -1,72 +1,90 @@
 import React from 'react';
-import { ScrollView, View, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import { LearningPathBlob } from './LearningPathBlob';
-import Colors from '../design/colors';
-import { LockIcon, BookIcon, CheckIcon } from '../components/LessonIcons'; 
+import { LockIcon, BookIcon, CheckIcon } from '../components/LessonIcons';
 
 type LessonStatus = 'locked' | 'in-progress' | 'completed';
 
 interface Lesson {
   id: number;
+  date: string;
   label: string;
-  icon: React.ReactNode | string;
+  icon: React.ReactNode;
   status: LessonStatus;
 }
 
-// Generate 28 lessons for example
-const lessons: Lesson[] = Array.from({ length: 28 }, (_, i) => ({
-  id: i + 1,
-  label: `${i + 1}`,
-  icon: i === 0 ? <LockIcon /> : i === 1 ? <BookIcon /> : <CheckIcon />,
-  status: i === 0 ? 'locked' : i === 1 ? 'in-progress' : 'completed',
-}));
+const generateChronologicalLessons = (pastDays: number, futureDays: number): Lesson[] => {
+  const today = new Date();
+
+  return Array.from({ length: pastDays + 1 + futureDays }, (_, i) => {
+    const dayOffset = i - pastDays;
+    const date = new Date(today);
+    date.setDate(today.getDate() + dayOffset);
+
+    const label = date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+    });
+
+    let status: LessonStatus = 'locked';
+    let icon: React.ReactNode = <LockIcon />;
+
+    if (dayOffset < 0) {
+      status = 'completed';
+      icon = <CheckIcon />;
+    } else if (dayOffset === 0) {
+      status = 'in-progress';
+      icon = <BookIcon />;
+    }
+
+    return {
+      id: i + 1,
+      date: date.toISOString(),
+      label,
+      icon,
+      status,
+    };
+  });
+};
+
+const lessons = generateChronologicalLessons(89, 1); // 89 past, today, 1 future
 
 export const LearningPath = () => {
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      {lessons.map((lesson, index) => (
+    <FlatList
+      data={lessons}               // ordered oldest → future
+      inverted                     // render from bottom up
+      keyExtractor={(item) => item.id.toString()}
+      contentContainerStyle={styles.listContainer}
+      renderItem={({ item, index }) => (
         <View
-            key={lesson.id}
-            style={[
-                styles.blobWrapper,
-                {
-                marginLeft: index % 2 === 0
-                    ? 20 + Math.floor(Math.random() * 70) // 20–29 px
-                    : undefined,
-                marginRight: index % 2 !== 0
-                    ? 20 + Math.floor(Math.random() * 70) // 20–29 px
-                    : undefined,
-                alignSelf: index % 2 === 0 ? 'flex-start' : 'flex-end',
-                },
-            ]}
+          style={[
+            styles.blobWrapper,
+            {
+              marginLeft: index % 2 === 0 ? 40 : undefined,
+              marginRight: index % 2 !== 0 ? 40 : undefined,
+              alignSelf: index % 2 === 0 ? 'flex-start' : 'flex-end',
+            },
+          ]}
         >
           <LearningPathBlob
-            status={lesson.status}
-            icon={lesson.icon}
-            label={lesson.label}
+            status={item.status}
+            icon={item.icon}
+            label={item.label}
           />
         </View>
-      ))}
-    </ScrollView>
+      )}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    backgroundColor: Colors.weed,
-    paddingBottom: 10,
+  listContainer: {
+    paddingVertical: 20,
   },
   blobWrapper: {
-    height: '4%', // 100% / 7 = one-seventh of screen height
-    justifyContent: 'center',
+    marginVertical: 10,
     width: '75%',
-  },
-  left: {
-    alignSelf: 'flex-start',
-    marginLeft: 20,
-  },
-  right: {
-    alignSelf: 'flex-end',
-    marginRight: 20,
+    justifyContent: 'center',
   },
 });
