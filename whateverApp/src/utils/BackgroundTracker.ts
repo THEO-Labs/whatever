@@ -22,7 +22,6 @@ export const TrackerManager: React.FC = () => {
     const activityListener = pedometerEmitter.addListener(
       'ActivityUpdate',
       async event => {
-        console.log('[Native Activity]', event);
         await saveToBuffer({
           type: 'native-activity',
           data: event,
@@ -33,7 +32,6 @@ export const TrackerManager: React.FC = () => {
 
     // 3. BackgroundGeolocation Activity Listener
     BackgroundGeolocation.onActivityChange(async activity => {
-      console.log('[Geolocation Activity]', activity);
       await saveToBuffer({
         type: 'geo-activity',
         data: activity,
@@ -41,28 +39,10 @@ export const TrackerManager: React.FC = () => {
       });
     });
 
-    // 4. Schrittzähler alle 60 Sek.
-    const intervalMs = 5_000;
-    const pedometerInterval = setInterval(async () => {
-      const now = Date.now();
-      const oneMinuteAgo = now - intervalMs;
-      try {
-        const steps = await PedometerModule.getStepsInRange(oneMinuteAgo, now);
-        console.log('[Steps]', steps);
-        await saveToBuffer({
-          type: 'steps',
-          data: steps,
-          timestamp: now,
-        });
-      } catch (e) {
-        console.warn('[Pedometer] Fehler beim Abrufen der Schritte:', e);
-      }
-    }, intervalMs);
 
     return () => {
       BackgroundGeolocation.removeAllListeners();
       activityListener.remove();
-      clearInterval(pedometerInterval);
     };
   }, []);
 
