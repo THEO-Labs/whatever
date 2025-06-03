@@ -11,28 +11,30 @@ export default function App() {
   const [currentRoute, setCurrentRoute] = React.useState<string>();
 
   return (
-    <NavigationContainer
-      ref={navigationRef}
-      onReady={() => {
-        setCurrentRoute(navigationRef.getCurrentRoute()?.name);
-      }}
-      onStateChange={() => {
-        setCurrentRoute(navigationRef.getCurrentRoute()?.name);
-      }}>
+    <View style={styles.container}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <SafeAreaView style={styles.container}>
-        <CustomHeader currentRoute={currentRoute} navigationRef={navigationRef} />
-        <View style={styles.navigator}>
+      <CustomHeader currentRoute={currentRoute} navigationRef={navigationRef} />
+      <NavigationContainer
+        ref={navigationRef}
+        onReady={() => {
+          setCurrentRoute(navigationRef.getCurrentRoute()?.name);
+        }}
+        onStateChange={() => {
+          setCurrentRoute(navigationRef.getCurrentRoute()?.name);
+        }}
+      >
+        <SafeAreaView style={styles.navigator}>
           <AppNavigator />
-        </View>
-      </SafeAreaView>
-    </NavigationContainer>
+        </SafeAreaView>
+      </NavigationContainer>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#000', // Adjust as needed or use your Colors file
   },
   navigator: {
     flex: 1,

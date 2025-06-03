@@ -61,19 +61,20 @@ const styles = StyleSheet.create({
   header: {
     paddingTop: 50,
     paddingHorizontal: 16,
-    paddingBottom: 12,
-    backgroundColor: Colors.weed,
+    paddingBottom: 2,
+    backgroundColor: '#ffffff',
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
   leftIcon: {
     position: 'absolute',
-    top: 50,
-    left: 16,
+    top: 55,
+    left: 20,
     zIndex: 10,
   },
   circles: {
     flexDirection: 'row',
     justifyContent: 'center',
+    marginTop: 20,
   },
 });
