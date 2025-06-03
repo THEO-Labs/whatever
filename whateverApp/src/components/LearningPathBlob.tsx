@@ -33,7 +33,6 @@ export const LearningPathBlob: React.FC<LearningPathBlobProps> = ({
       <View style={styles.container}>
         <View style={[styles.blob, statusStyle[status]]}>
           {renderIcon}
-          
         </View>
         {label && <Text style={styles.label}>{label}</Text>}
       </View>
@@ -54,43 +53,36 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
-    shadowColor: "#FCA5A5",
-    shadowOffset: { width: 10, height: -5 },
+    shadowOffset: { width: 5, height: 5 },
     shadowOpacity: 1,
     shadowRadius: 0,
-    elevation: 1,
+    elevation: 3,
   },
 
   locked: {
-    backgroundColor: '#E5E7EB', 
+    backgroundColor: "#D1D5DB", 
+    borderWidth: 2,
+    borderColor: "#9CA3AF",
+    shadowColor: "#6B7280",
+
   },
   inProgress: {
     backgroundColor: Colors.raspberry,
     borderWidth: 2,
     borderColor: Colors.red,
+    shadowColor: "#FCA5A5",
+
   },
   completed: {
     backgroundColor: '#BBF7D0', 
+    borderWidth: 2,
+    borderColor: Colors.red,
+    shadowColor: "#FCA5A5",
   },
   icon: {
     fontSize: 32,
   },
-  overlay: {
-    position: 'absolute',
-    bottom: -4,
-    right: -4,
-    backgroundColor: 'white',
-    borderRadius: 12,
-    padding: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  overlayEmoji: {
-    fontSize: 16,
-  },
+ 
   label: {
     marginTop: 6,
     fontSize: 12,
