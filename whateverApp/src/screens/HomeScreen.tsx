@@ -46,6 +46,7 @@ export default function HomeScreen({navigation}: Props) {
 
         const result = await PedometerModule.getStepsInRange(from, now);
         setSteps(result.steps ?? 0);
+        console.log('Heutige Schritte:', result.steps);
       } catch (e) {
         console.warn('Fehler beim Abrufen der heutigen Schritte:', e);
       }

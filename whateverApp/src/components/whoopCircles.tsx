@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
-import Colors from "../design/colors"
+import Colors from '../design/colors';
 
 type Props = {
   value: number;
@@ -17,6 +17,7 @@ export const ActivityCircle: React.FC<Props> = ({value, max, label, color}) => {
   const circumference = 2 * Math.PI * radius;
   const percentage = Math.min(value / max, 1);
   const strokeDashoffset = circumference * (1 - percentage);
+
 
   return (
     <View style={styles.container}>

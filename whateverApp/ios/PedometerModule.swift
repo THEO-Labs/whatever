@@ -26,20 +26,16 @@ class PedometerModule: RCTEventEmitter {
   }
 
   @objc
-  func getStepsInRange(_ fromTimestamp: NSNumber, to toTimestamp: NSNumber,
-                       resolver resolve: @escaping RCTPromiseResolveBlock,
-                       rejecter reject: @escaping RCTPromiseRejectBlock) {
-    let fromDate = Date(timeIntervalSince1970: fromTimestamp.doubleValue / 1000)
-    let toDate = Date(timeIntervalSince1970: toTimestamp.doubleValue / 1000)
-
+  func startUpdates(_ resolver: @escaping RCTPromiseResolveBlock,
+                    rejecter reject: @escaping RCTPromiseRejectBlock) {
     if CMPedometer.isStepCountingAvailable() {
-      pedometer.queryPedometerData(from: fromDate, to: toDate) { data, error in
+      pedometer.startUpdates(from: Date()) { data, error in
         if let error = error {
-          reject("QUERY_ERROR", "Fehler beim Abrufen der Schritte", error)
+          reject("PEDOMETER_ERROR", "Fehler beim Starten", error)
         } else if let steps = data?.numberOfSteps {
-          resolve(["steps": steps])
+          resolver(["steps": steps])
         } else {
-          reject("NO_DATA", "Keine Schritte vorhanden", nil)
+          reject("NO_DATA", "Keine Schritte empfangen", nil)
         }
       }
     } else {
@@ -48,18 +44,65 @@ class PedometerModule: RCTEventEmitter {
   }
 
   @objc
-  func startActivityUpdates() {
-    guard CMMotionActivityManager.isActivityAvailable() else { return }
+  func getTodaySteps(_ resolver: @escaping RCTPromiseResolveBlock,
+                     rejecter reject: @escaping RCTPromiseRejectBlock) {
+    let now = Date()
+    let startOfDay = Calendar.current.startOfDay(for: now)
 
-    activityManager.startActivityUpdates(to: .main) { [weak self] activity in
+    if CMPedometer.isStepCountingAvailable() {
+      pedometer.queryPedometerData(from: startOfDay, to: now) { data, error in
+        if let error = error {
+          reject("QUERY_ERROR", "Fehler beim Abrufen der Schritte", error)
+        } else if let steps = data?.numberOfSteps {
+          resolver(["steps": steps])
+        } else {
+          reject("NO_DATA", "Keine Schrittzahl vorhanden", nil)
+        }
+      }
+    } else {
+      reject("NOT_AVAILABLE", "Pedometer nicht verfügbar", nil)
+    }
+  }
+  @objc
+  func getStepsInRange(_ fromTimestamp: NSNumber, to toTimestamp: NSNumber,
+                       resolver resolve: @escaping RCTPromiseResolveBlock,
+                       rejecter reject: @escaping RCTPromiseRejectBlock) {
+
+    let fromDate = Date(timeIntervalSince1970: fromTimestamp.doubleValue / 1000)
+    let toDate = Date(timeIntervalSince1970: toTimestamp.doubleValue / 1000)
+
+    if CMPedometer.isStepCountingAvailable() {
+      pedometer.queryPedometerData(from: fromDate, to: toDate) { data, error in
+        if let error = error {
+          reject("QUERY_ERROR", "Fehler beim Abrufen der Schritte", error)
+        } else if let steps = data?.numberOfSteps {
+          resolve(["steps": steps, "from": fromTimestamp, "to": toTimestamp])
+        } else {
+          reject("NO_DATA", "Keine Schrittzahl vorhanden", nil)
+        }
+      }
+    } else {
+      reject("NOT_AVAILABLE", "Pedometer nicht verfügbar", nil)
+    }
+  }
+  @objc
+  func stopUpdates() {
+    pedometer.stopUpdates()
+  }
+
+  @objc
+  func startActivityUpdates() {
+    if !CMMotionActivityManager.isActivityAvailable() { return }
+
+    activityManager.startActivityUpdates(to: OperationQueue.main) { [weak self] activity in
       guard let self = self, let activity = activity, self.hasListeners else { return }
 
-      var type = "unknown"
-      if activity.walking { type = "walking" }
-      else if activity.running { type = "running" }
-      else if activity.stationary { type = "stationary" }
-      else if activity.automotive { type = "automotive" }
-      else if activity.cycling { type = "cycling" }
+      var currentActivity = "unknown"
+      if activity.walking { currentActivity = "walking" }
+      else if activity.running { currentActivity = "running" }
+      else if activity.automotive { currentActivity = "automotive" }
+      else if activity.cycling { currentActivity = "cycling" }
+      else if activity.stationary { currentActivity = "stationary" }
 
       let confidence: String
       switch activity.confidence {
@@ -70,7 +113,7 @@ class PedometerModule: RCTEventEmitter {
       }
 
       self.sendEvent(withName: "ActivityUpdate", body: [
-        "activity": type,
+        "activity": currentActivity,
         "confidence": confidence
       ])
     }

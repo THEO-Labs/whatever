@@ -8,6 +8,7 @@ import {calculateDailyActivityScores} from '../utils/calculateActivityScore.ts';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function Main() {
+
   useEffect(() => {
     const interval = setInterval(() => {
       calculateDailyActivityScores().then(scores => {
