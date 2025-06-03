@@ -1,5 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
+import Colors from '../design/colors';
+
 
 interface LearningPathBlobProps {
   status: 'locked' | 'in-progress' | 'completed';
@@ -54,15 +56,15 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   blob: {
-    width: 80,
+    width: 100,
     height: 80,
     borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
+    shadowOffset: { width: 10, height: 2 },
+    shadowOpacity: .15,
     shadowRadius: 4,
     elevation: 4,
   },
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E5E7EB', // light gray
   },
   inProgress: {
-    backgroundColor: '#FEF9C3', // soft yellow
+    backgroundColor: Colors.raspberry, // soft yellow
   },
   completed: {
     backgroundColor: '#BBF7D0', // soft green
