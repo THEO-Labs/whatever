@@ -1,21 +1,28 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { ScrollView, View, StyleSheet } from 'react-native';
 import { LearningPathBlob } from './LearningPathBlob';
 import Colors from '../design/colors';
 
-const lessons = [
-  { id: 1, icon: '🔒', label: '1', status: 'locked' },         // top
-  { id: 2, icon: '📘', label: '2', status: 'in-progress' },    // below
-  { id: 3, icon: '✅', label: '3', status: 'completed' },
-  { id: 4, icon: '✅', label: '4', status: 'completed' },
-  { id: 5, icon: '✅', label: '5', status: 'completed' },
-  { id: 6, icon: '✅', label: '6', status: 'completed' },
-  { id: 7, icon: '✅', label: '7', status: 'completed' },
-];
+type LessonStatus = 'locked' | 'in-progress' | 'completed';
+
+interface Lesson {
+  id: number;
+  label: string;
+  icon: React.ReactNode | string;
+  status: LessonStatus;
+}
+
+// Generate 28 lessons for example
+const lessons: Lesson[] = Array.from({ length: 28 }, (_, i) => ({
+  id: i + 1,
+  label: `${i + 1}`,
+  icon: i === 0 ? '🔒' : i === 1 ? '📘' : '✅',
+  status: i === 0 ? 'locked' : i === 1 ? 'in-progress' : 'completed',
+}));
 
 export const LearningPath = () => {
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
       {lessons.map((lesson, index) => (
         <View
           key={lesson.id}
@@ -31,19 +38,19 @@ export const LearningPath = () => {
           />
         </View>
       ))}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  scrollContainer: {
     backgroundColor: Colors.weed,
-    justifyContent: 'space-around',
-    paddingVertical: 20,
+    paddingBottom: 10,
   },
   blobWrapper: {
-    width: '60%',
+    height: '4%', // 100% / 7 = one-seventh of screen height
+    justifyContent: 'center',
+    width: '75%',
   },
   left: {
     alignSelf: 'flex-start',
