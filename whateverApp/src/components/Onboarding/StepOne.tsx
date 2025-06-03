@@ -8,6 +8,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import WelcomeText from './WelcomeText.tsx';
 import {RulerPicker} from 'react-native-ruler-picker';
 
@@ -18,14 +19,13 @@ export default function StepOne({
 }: {
   name: string;
   setName: (val: string) => void;
-  height: number;
-  setHeight: (val: number) => void;
   next: () => void;
 }) {
   const fadeAnim = React.useRef(new Animated.Value(0)).current;
-  const [, setAge] = React.useState(35);
-  const [, setHeight] = React.useState(170);
-  const [, setWeight] = React.useState(60);
+
+  const [age, setAge] = React.useState(32);
+  const [height, setHeight] = React.useState(170);
+  const [weight, setWeight] = React.useState(70);
 
   React.useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -35,14 +35,26 @@ export default function StepOne({
     }).start();
   }, [fadeAnim]);
 
+  const handleNext = async () => {
+    try {
+      await AsyncStorage.setItem(
+        'onboardingData',
+        JSON.stringify({
+          name,
+          age,
+          height,
+          weight,
+        }),
+      );
+      next(); // gehe zum nächsten Schritt
+    } catch (err) {
+      console.error('Fehler beim Speichern der Onboarding-Daten:', err);
+    }
+  };
+
   return (
     <ScrollView contentContainerStyle={{flexGrow: 1}}>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          padding: 24,
-        }}>
+      <View style={{flex: 1, justifyContent: 'center', padding: 24}}>
         {/* Logo */}
         <View style={{alignItems: 'center', marginBottom: 24}}>
           <Image
@@ -55,7 +67,9 @@ export default function StepOne({
             }}
           />
         </View>
+
         <WelcomeText />
+
         {/* Name */}
         <Text style={{marginBottom: 8, fontWeight: '500', color: '#fff'}}>
           Wie dürfen wir dich nennen?
@@ -81,7 +95,7 @@ export default function StepOne({
             color: '#fff',
             marginTop: 20,
           }}>
-          Verrätss du uns dein Alter?
+          Verrätst du uns dein Alter?
         </Text>
         <View style={{marginTop: 30}}>
           <RulerPicker
@@ -89,7 +103,7 @@ export default function StepOne({
             max={99}
             step={1}
             fractionDigits={0}
-            initialValue={29}
+            initialValue={age}
             onValueChangeEnd={val => setAge(Number(val))}
             unit="Jahre"
             height={150}
@@ -112,11 +126,11 @@ export default function StepOne({
         </Text>
         <View style={{marginTop: 30}}>
           <RulerPicker
-            min={16}
-            max={99}
+            min={30}
+            max={150}
             step={1}
             fractionDigits={0}
-            initialValue={51}
+            initialValue={weight}
             onValueChangeEnd={val => setWeight(Number(val))}
             unit="kg"
             height={150}
@@ -126,6 +140,7 @@ export default function StepOne({
             shortStepColor="#134016"
           />
         </View>
+
         {/* Größe */}
         <Text
           style={{
@@ -142,7 +157,7 @@ export default function StepOne({
             max={220}
             step={1}
             fractionDigits={0}
-            initialValue={165}
+            initialValue={height}
             onValueChangeEnd={val => setHeight(Number(val))}
             unit="cm"
             height={150}
@@ -152,8 +167,9 @@ export default function StepOne({
             shortStepColor="#134016"
           />
         </View>
+
         {/* Weiter */}
-        <Button title="Weiter" onPress={next} />
+        <Button title="Weiter" onPress={handleNext} />
       </View>
     </ScrollView>
   );
