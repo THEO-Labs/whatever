@@ -1,19 +1,37 @@
-import React from 'react';
-import {StatusBar, useColorScheme, View, StyleSheet} from 'react-native';
-import {NavigationContainer, useNavigationContainerRef} from '@react-navigation/native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import React, { useEffect, useState } from 'react';
+import { StatusBar, useColorScheme, View, StyleSheet } from 'react-native';
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import AppNavigator from './src/navigation/AppNavigator';
-import {CustomHeader} from './src/components/CustomHeader';
+import { CustomHeader } from './src/components/CustomHeader';
 
 export default function App() {
   const isDarkMode = useColorScheme() === 'dark';
   const navigationRef = useNavigationContainerRef();
-  const [currentRoute, setCurrentRoute] = React.useState<string>();
+  const [currentRoute, setCurrentRoute] = useState<string>();
+  const [initialRoute, setInitialRoute] = useState<'Onboarding' | 'Home' | null>(null);
+
+  // Determine initial screen based on onboarding
+  useEffect(() => {
+    (async () => {
+      const completed = await AsyncStorage.getItem('onboardingComplete');
+      setInitialRoute(completed === 'true' ? 'Home' : 'Onboarding');
+    })();
+  }, []);
+
+  if (!initialRoute) {
+    // Still loading AsyncStorage
+    return null;
+  }
 
   return (
     <View style={styles.container}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <CustomHeader currentRoute={currentRoute} navigationRef={navigationRef} />
+      {currentRoute !== 'Onboarding' && (
+        <CustomHeader currentRoute={currentRoute} navigationRef={navigationRef} />
+      )}
       <NavigationContainer
         ref={navigationRef}
         onReady={() => {
@@ -24,7 +42,7 @@ export default function App() {
         }}
       >
         <SafeAreaView style={styles.navigator}>
-          <AppNavigator />
+          <AppNavigator initialRoute={initialRoute} />
         </SafeAreaView>
       </NavigationContainer>
     </View>
@@ -32,11 +50,6 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000', // Adjust as needed or use your Colors file
-  },
-  navigator: {
-    flex: 1,
-  },
+  container: { flex: 1, backgroundColor: '#000' },
+  navigator: { flex: 1 },
 });

@@ -3,7 +3,6 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import OnboardingScreen from '../screens/OnboardingScreen';
-import {CardStyleInterpolators} from '@react-navigation/stack';
 
 export type RootStackParamList = {
   Onboarding: undefined;
