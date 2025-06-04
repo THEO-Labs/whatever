@@ -78,8 +78,11 @@ export const calculateDailyActivityScores = async (): Promise<
 
     for (const date in scores) {
       const { activeTime, restTime } = scores[date];
-      const activityScore = Math.min(parseFloat(((activeTime / 240) * 100).toFixed(2)), 100); // z.B. max 4h aktiv
-      const restScore = Math.min(Math.max(parseFloat(((restTime / 180) * 100).toFixed(2)), 0), 100); // z.B. max 3h rest
+      const activityScore = Math.min(
+          Math.max(parseFloat(((activeTime / 60) * 100).toFixed(2)), 0),
+          100
+      );
+      const restScore = Math.min(Math.max(parseFloat(((restTime / 180) * 100).toFixed(2)), 0), 100);
       normalized[date] = { activityScore, restScore };
     }
     console.log('Neu berechnet: ', normalized);
