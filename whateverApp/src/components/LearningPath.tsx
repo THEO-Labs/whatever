@@ -1,22 +1,46 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import {
   View,
   Animated,
+  FlatList,
   StyleSheet,
   Text,
   useWindowDimensions,
+  TouchableOpacity,
 } from 'react-native';
 
 import { LearningPathBlob } from './LearningPathBlob';
 import { LockIcon, BookIcon, CheckIcon } from '../components/LessonIcons';
 import Colors from '../design/colors';
+import { DayPlan } from '../assets/trainingPlan';
+import { trainingPlan } from '../assets/trainingPlan';
+import { LearningModal } from './LearningModal';
 
 /* ---------- small divider component -------------------------------- */
-const PhaseDivider = ({ label }: { label: string }) => (
-  <View style={styles.dividerOuter}>
-    <Text style={styles.dividerText}>{label}</Text>
+const PhaseDivider = ({
+                        label,
+                        phase,
+                      }: {
+  label: string;
+  phase: RowBlob['phase'];
+}) => (
+  <View
+    style={[
+      styles.dividerOuter,
+      { backgroundColor: phaseColors[phase].bg },
+    ]}
+  >
+    <Text
+      style={[
+        styles.dividerText,
+        { color: phaseColors[phase].text },
+      ]}
+    >
+      {label}
+    </Text>
   </View>
 );
+
 
 /* ---------- types --------------------------------------------------- */
 type Status = 'locked' | 'in-progress' | 'completed';
@@ -26,6 +50,8 @@ interface RowBlob {
   label: string;
   icon: React.ReactNode;
   status: Status;
+  phase: 'Menstruation' | 'Follicular' | 'Ovulation' | 'Luteal';
+
 }
 interface RowDivider {
   kind: 'divider';
@@ -37,40 +63,37 @@ type Row = RowBlob | RowDivider;
 /* ---------- phases -------------------------------------------------- */
 const phases = ['Menstruation', 'Follicular', 'Ovulation', 'Luteal'];
 
-/* ---------- build 28 lessons + 4 dividers --------------------------- */
-const rows: Row[] = (() => {
-  const today = new Date();
-  const arr: Row[] = [];
+const phaseColors: Record<RowBlob['phase'], { bg: string; text: string }> = {
+  Menstruation: { bg: Colors.mendark,   text: Colors.menlight },
+  Follicular:   { bg: Colors.follight,   text: Colors.foldark },
+  Ovulation:    { bg: Colors.ovudark,   text: Colors.ovulight },
+  Luteal:       { bg: Colors.luteallight, text: Colors.lutealdark },
+};
 
-  phases.forEach((phase, phaseIdx) => {
-    arr.push({ kind: 'divider', id: phaseIdx * 1000, phase }); // divider id >= 1000
-    for (let i = 0; i < 7; i++) {
-      const globalIdx = phaseIdx * 7 + i;
-      const offset = globalIdx - 27;
-      const date = new Date(today);
-      date.setDate(today.getDate() + offset);
-      const label = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
-      let status: Status = 'locked';
-      let icon: React.ReactNode = <LockIcon />;
-      if (offset < 0) { status = 'completed'; icon = <CheckIcon />; }
-      else if (offset === 0) { status = 'in-progress'; icon = <BookIcon />; }
+/* ---------- transform trainingPlan into rows ----------------------- */
+const buildRows = (): Row[] => {
 
-      arr.push({
-        kind: 'blob',
-        id: globalIdx + 1,
-        label,
-        icon,
-        status,
-      });
-    }
+  return trainingPlan.flatMap((d, idx) => {
+    const phaseIdx = phases.indexOf(d.phase);
+    const needDivider = idx % 7 === 0;
+    const blob: RowBlob = {
+      kind: 'blob',
+      id: idx + 1,
+      label: `Day ${d.day}`,
+      icon: d.active ? (d.isToday ? <BookIcon/> : <CheckIcon/>) : <LockIcon/>,
+      status: d.isToday ? 'in-progress' : d.active ? 'completed' : 'locked',
+      phase: d.phase,
+    };
+    return needDivider
+      ? [
+          { kind: 'divider', id: 1000 + phaseIdx, phase: d.phase },
+          blob,
+        ]
+      : [blob];
   });
-  return arr;
-})();
-
-/* ---------- helpers ------------------------------------------------- */
-const waveX = (idx: number, amp: number, per: number) =>
-  amp * Math.sin((2 * Math.PI * idx) / per);
+};
+const rows: Row[] = buildRows();
 
 /* ---------- main component ----------------------------------------- */
 export const LearningPath = () => {
@@ -89,61 +112,106 @@ export const LearningPath = () => {
     outputRange: [
       Colors.raspberry, Colors.raspberry,
       Colors.weed,      Colors.weed,
-      Colors.green,     Colors.green,
-      Colors.red,       Colors.red,
+      Colors.luteallight,     Colors.luteallight,
+      Colors.weed,       Colors.weed,
     ],
     extrapolate: 'clamp',
   });
+
+  const flatListRef = useRef<FlatList>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<DayPlan | null>(null);
+
+  useEffect(() => {
+    const index = rows.findIndex(r => r.kind==='blob' && r.status==='in-progress');
+    if (index !== -1 && flatListRef.current) {
+      const timeout = setTimeout(() =>
+        flatListRef.current?.scrollToIndex({ index, animated: false }), 100);
+      return () => clearTimeout(timeout);
+    }
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>
       <Animated.View style={[StyleSheet.absoluteFill, { backgroundColor: bgColor, opacity: 0.3 }]} />
       <Animated.FlatList
+        ref={flatListRef}
         data={rows}
-        inverted
         keyExtractor={(row) => String(row.id)}
-        contentContainerStyle={styles.container}
+        contentContainerStyle={[styles.container, { paddingTop: 280 }]}
         scrollEventThrottle={16}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
           useNativeDriver: false,
         })}
+        getItemLayout={(_, index) => ({
+            length: 110,
+            offset: 110 * index,
+            index,
+        })}
         renderItem={({ item, index }) => {
           if (item.kind === 'divider') {
-            return <PhaseDivider label={`${item.phase} Phase`} />;
+            return (
+              <PhaseDivider
+                label={`${item.phase} Phase`}
+                phase={item.phase}
+              />
+            );
           }
 
           return (
-            <View
-              style={[
-                styles.blobWrapper,
-                { transform: [{ translateX: waveX(index, AMP, PERIOD) }] },
-              ]}
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => {
+                const dayPlan = trainingPlan.find(p => p.day === item.id) || null;
+                if (dayPlan && item.status !== 'locked') {
+                  setSelectedPlan(dayPlan);
+                  setModalVisible(true);
+                }
+              }}
+              disabled={item.status === 'locked'}
+              style={{
+                width: 100,
+                alignItems: 'center',
+                marginVertical: 12,
+                alignSelf: 'center',
+                transform: [{ translateX: waveX(index, AMP, PERIOD) }],
+              }}
             >
-              <LearningPathBlob status={item.status} icon={item.icon} label={item.label} />
-            </View>
+              <LearningPathBlob
+                status={item.status}
+                phase={item.phase}
+                icon={item.icon}
+                label={item.label}
+              />
+            </TouchableOpacity>
           );
         }}
+      />
+      <LearningModal
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+        dayPlan={selectedPlan}
       />
     </View>
   );
 };
 
+/* ---------- helpers ------------------------------------------------- */
+const waveX = (idx: number, amp: number, per: number) =>
+  amp * Math.sin((2 * Math.PI * idx) / per);
+
 /* ---------- styles -------------------------------------------------- */
 const styles = StyleSheet.create({
-  container: { paddingVertical: 12 },
-  blobWrapper: {
-    alignSelf: 'center',
-    width: '70%',
-    marginVertical: 12,
-  },
+  container: {
+    paddingVertical: 12,
+},
   dividerOuter: {
     alignSelf: 'center',
     width: '85%',
     paddingVertical: 20,
     paddingHorizontal: 24,
     marginVertical: 30,
-    borderRadius: 40,
-    backgroundColor: Colors.red,
+    borderRadius: 30,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.12,

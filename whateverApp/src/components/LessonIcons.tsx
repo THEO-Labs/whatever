@@ -14,10 +14,10 @@ export const LockIcon = () => (
 );
 
 export const BookIcon = () => (
-  <Svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+  <Svg width="34" height="36" viewBox="0 0 22 22" fill="none">
     <Path
       d="M11 1L14.09 7.26L21 8.27L16 13.14L17.18 20.02L11 16.77L4.82 20.02L6 13.14L1 8.27L7.91 7.26L11 1Z"
-      stroke="black"
+      stroke="#FFC1C8"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -26,10 +26,10 @@ export const BookIcon = () => (
 );
 
 export const CheckIcon = () => (
-  <Svg width="18" height="13" viewBox="0 0 18 13" fill="none">
+  <Svg width="32" height="34" viewBox="0 0 18 13" fill="none">
     <Path
       d="M17 1L6 12L1 7"
-      stroke="black"
+      stroke="#E5E5E5"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
