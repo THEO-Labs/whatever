@@ -29,7 +29,7 @@ export const CheckIcon = () => (
   <Svg width="32" height="34" viewBox="0 0 18 13" fill="none">
     <Path
       d="M17 1L6 12L1 7"
-      stroke="#058849"
+      stroke="#E5E5E5"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"

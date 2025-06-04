@@ -13,6 +13,8 @@ const Colors = {
   ovudark: '#058849',
   lutealdark: '#F84747',
   luteallight: '#FFC1C8',
+  comlight: '#E5E5E5',
+  comdark: '#BAB7B7',
 
 
 

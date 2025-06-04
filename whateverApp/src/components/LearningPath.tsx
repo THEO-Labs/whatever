@@ -29,6 +29,8 @@ interface RowBlob {
   label: string;
   icon: React.ReactNode;
   status: Status;
+  phase: 'Menstruation' | 'Follicular' | 'Ovulation' | 'Luteal';
+
 }
 interface RowDivider {
   kind: 'divider';
@@ -65,7 +67,8 @@ const rows: Row[] = (() => {
         label,
         icon,
         status,
-      });
+        phase: phase.toLowerCase() as RowBlob['phase'],
+        });
     }
   });
   return arr;
@@ -151,7 +154,12 @@ export const LearningPath = () => {
                 { transform: [{ translateX: waveX(index, AMP, PERIOD) }] },
               ]}
             >
-              <LearningPathBlob status={item.status} icon={item.icon} label={item.label} />
+              <LearningPathBlob
+                status={item.status}
+                phase={item.phase}
+                icon={item.icon}
+                label={item.label}
+                />
             </View>
           );
         }}
