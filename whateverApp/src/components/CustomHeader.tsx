@@ -6,12 +6,18 @@ import {ActivityCircle} from './whoopCircles';
 import Colors from '../design/colors';
 import {ArrowLeft, User} from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useActivity} from '../utils/ActivityContext.tsx';
 
 export const CustomHeader = ({ currentRoute, navigationRef }: { currentRoute?: string; navigationRef: any }) => {
   const [focus, setFocus] = useState(0);
   const [energy, setEnergy] = useState(0);
   const [steps, setSteps] = useState(0);
+  const {activity} = useActivity();
+  const isActive = activity === 'active';
 
+  useEffect(() => {
+    console.log(`[CustomHeader] Activity state changed: ${activity}`);
+  }, [isActive]);
   useEffect(() => {
     const loadScores = async () => {
       try {

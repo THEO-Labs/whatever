@@ -8,6 +8,7 @@ import AppNavigator from './src/navigation/AppNavigator';
 import {CustomHeader} from './src/components/CustomHeader';
 import {TrackerManager} from './src/utils/BackgroundTracker';
 import {calculateDailyActivityScores} from './src/utils/calculateActivityScore.ts';
+import {ActivityProvider} from "./src/utils/ActivityContext.tsx";
 
 const {PedometerModule} = NativeModules;
 
@@ -72,6 +73,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+        <ActivityProvider>
       <TrackerManager/>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       {currentRoute !== 'Onboarding' && (
@@ -90,6 +92,8 @@ export default function App() {
           <AppNavigator initialRoute={initialRoute} />
         </SafeAreaView>
       </NavigationContainer>
+        </ActivityProvider>
+
     </View>
   );
 }
