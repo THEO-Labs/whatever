@@ -65,8 +65,8 @@ export const CustomHeader = ({ currentRoute, navigationRef }: { currentRoute?: s
         </View>
       )}
       <View style={styles.circles}>
-        <ActivityCircle value={focus} max={100} label="Rest" color={Colors.lime} />
-        <ActivityCircle value={energy} max={100} label="Activity" color={Colors.red} />
+        <ActivityCircle value={focus} max={100} label="Rest" color={Colors.lime} blink={!isActive}/>
+        <ActivityCircle value={energy} max={100} label="Activity" color={Colors.red} blink={isActive}/>
         <ActivityCircle value={steps} max={10000} label="Steps" color={Colors.lime}/>
       </View>
     </View>
