@@ -22,8 +22,7 @@ const Colors = {
 
 export default Colors;
 
-
-/* 
+/*
 Colors:
 
 Menstruation Phase:
