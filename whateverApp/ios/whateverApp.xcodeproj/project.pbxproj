@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		06AE894FE67B4FA995A61E04 /* PoseDetectionFrameProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0629E88E84478E9B71E240 /* PoseDetectionFrameProcessor.swift */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		2BF974E12DF02C6000B401E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		2BF974E12DF02C6000B401E2 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		3F597BC0B8C89DC71C251A15 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		564B2C9C2DEF360100CA6F9F /* PedometerModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564B2C9B2DEF360000CA6F9F /* PedometerModule.swift */; };
 		569488AB2DF0670500677ECA /* PedometerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 569488A92DF0670500677ECA /* PedometerModule.m */; };
@@ -269,7 +269,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2BF974E12DF02C6000B401E2 /* (null) in Sources */,
+				2BF974E12DF02C6000B401E2 /* BuildFile in Sources */,
 				564B2C9C2DEF360100CA6F9F /* PedometerModule.swift in Sources */,
 				761780ED2CA45674006654EE /* AppDelegate.swift in Sources */,
 				569488AB2DF0670500677ECA /* PedometerModule.m in Sources */,
@@ -408,7 +408,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -477,7 +480,10 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
