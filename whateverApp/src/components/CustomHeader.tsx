@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { TrackerManager } from '../utils/BackgroundTracker';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {TrackerManager} from '../utils/BackgroundTracker';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { ActivityCircle } from './whoopCircles';
+import {ActivityCircle} from './whoopCircles';
 import Colors from '../design/colors';
 import {ArrowLeft, User} from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useActivity} from '../utils/ActivityContext.tsx';
 
 export const CustomHeader = ({ currentRoute, navigationRef }: { currentRoute?: string; navigationRef: any }) => {
+  const onboardingScreens = ['Step1', 'Step2', 'Step3', 'Step4', 'Step5', 'Step6', 'Step7'];
+
+  // ✅ Hooks immer unconditionally oben aufrufen
   const [focus, setFocus] = useState(0);
   const [energy, setEnergy] = useState(0);
   const [steps, setSteps] = useState(0);
   const {activity} = useActivity();
   const isActive = activity === 'active';
 
-  useEffect(() => {
-    console.log(`[CustomHeader] Activity state changed: ${activity}`);
-  }, [isActive]);
   useEffect(() => {
     const loadScores = async () => {
       try {
@@ -40,6 +40,10 @@ export const CustomHeader = ({ currentRoute, navigationRef }: { currentRoute?: s
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    console.log(`[CustomHeader] Activity state changed: ${activity}`);
+  }, [isActive]);
+
   const goBackOrProfile = () => {
     if (currentRoute === 'Profile') {
       navigationRef.navigate('Home');
@@ -47,6 +51,11 @@ export const CustomHeader = ({ currentRoute, navigationRef }: { currentRoute?: s
       navigationRef.navigate('Profile');
     }
   };
+
+  // ✅ Danach render decision treffen
+  if (currentRoute && onboardingScreens.includes(currentRoute)) {
+    return null; // topbar ausblenden
+  }
 
   return (
     <>
