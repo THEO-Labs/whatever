@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import {
   View,
   Animated,
@@ -6,12 +6,15 @@ import {
   StyleSheet,
   Text,
   useWindowDimensions,
+  TouchableOpacity,
 } from 'react-native';
 
 import { LearningPathBlob } from './LearningPathBlob';
 import { LockIcon, BookIcon, CheckIcon } from '../components/LessonIcons';
 import Colors from '../design/colors';
-import { trainingPlan} from '../assets/trainingPlan.ts';
+import { DayPlan } from '../assets/trainingPlan';
+import { trainingPlan } from '../assets/trainingPlan';
+import { LearningModal } from './LearningModal';
 
 /* ---------- small divider component -------------------------------- */
 const PhaseDivider = ({ label }: { label: string }) => (
@@ -90,6 +93,8 @@ export const LearningPath = () => {
   });
 
   const flatListRef = useRef<FlatList>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<DayPlan | null>(null);
 
   useEffect(() => {
     const index = rows.findIndex(r => r.kind==='blob' && r.status==='in-progress');
@@ -123,21 +128,39 @@ export const LearningPath = () => {
           }
 
           return (
-            <View
-              style={[
-                styles.blobWrapper,
-                { transform: [{ translateX: waveX(index, AMP, PERIOD) }] },
-              ]}
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => {
+                const dayNumber = item.id;
+                const dayPlan = trainingPlan.find(p => p.day === dayNumber) || null;
+                if (dayPlan && item.status !== 'locked') {
+                  setSelectedPlan(dayPlan);
+                  setModalVisible(true);
+                }
+              }}
+              disabled={item.status === 'locked'}
             >
-              <LearningPathBlob
-                status={item.status}
-                phase={item.phase}
-                icon={item.icon}
-                label={item.label}
+              <View
+                style={[
+                  styles.blobWrapper,
+                  { transform: [{ translateX: waveX(index, AMP, PERIOD) }] },
+                ]}
+              >
+                <LearningPathBlob
+                  status={item.status}
+                  phase={item.phase}
+                  icon={item.icon}
+                  label={item.label}
                 />
-            </View>
+              </View>
+            </TouchableOpacity>
           );
         }}
+      />
+      <LearningModal
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+        dayPlan={selectedPlan}
       />
     </View>
   );
