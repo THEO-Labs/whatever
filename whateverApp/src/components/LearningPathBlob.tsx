@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import Colors from '../design/colors';
 
@@ -17,52 +17,62 @@ export const LearningPathBlob: React.FC<LearningPathBlobProps> = ({
   label,
   onPress,
 }) => {
+  const [isPressed, setIsPressed] = useState(false);
   const getBlobStyle = () => {
-    if (status === 'locked') {
-      return {
-        ...styles.blob,
-        ...styles.locked,
-      };
-    }
-
-    if (status === 'completed') {
-      return {
-        ...styles.blob,
-        ...styles.completed,
-      };
-    }
-
-    const phaseShadowColor = {
-      menstruation: Colors.menlight,
-      follicular: Colors.follight,
-      ovulation: Colors.ovulight,
-      luteal: Colors.luteallight,
-    };
-
-    const phaseBgColor = {
-      menstruation: Colors.mendark,
-      follicular: Colors.foldark,
-      ovulation: Colors.ovudark,
-      luteal: Colors.lutealdark,
-    };
-
+  if (status === 'locked') {
     return {
       ...styles.blob,
-      backgroundColor: phaseBgColor[phase],
-      shadowColor: phaseShadowColor[phase],
-      shadowOffset: { width: 0, height: 7 },
-      shadowOpacity: 1,
-      shadowRadius: 6,
-      elevation: 5,
+      ...styles.locked,
     };
+  }
+
+  if (status === 'completed') {
+    return {
+      ...styles.blob,
+      ...styles.completed,
+      borderWidth: isPressed ? 2 : 0,
+      borderColor: isPressed ? '#00000030' : 'transparent',
+    };
+  }
+
+  const phaseShadowColor = {
+    menstruation: Colors.menlight,
+    follicular: Colors.follight,
+    ovulation: Colors.ovulight,
+    luteal: Colors.luteallight,
   };
+
+  const phaseBgColor = {
+    menstruation: Colors.mendark,
+    follicular: Colors.foldark,
+    ovulation: Colors.ovudark,
+    luteal: Colors.lutealdark,
+  };
+
+  return {
+    ...styles.blob,
+    backgroundColor: phaseBgColor[phase],
+    shadowColor: phaseShadowColor[phase],
+    shadowOffset: { width: 0, height: 7 },
+    shadowOpacity: 1,
+    shadowRadius: 6,
+    elevation: 5,
+    borderWidth: isPressed ? 2 : 0,
+    borderColor: isPressed ? '#00000030' : 'transparent',
+  };
+};
 
   const renderIcon = typeof icon === 'string'
     ? <Text style={styles.icon}>{icon}</Text>
     : icon;
 
   return (
-    <Pressable onPress={onPress} disabled={status === 'locked'}>
+    <Pressable
+      onPress={onPress}
+      onPressIn={() => setIsPressed(true)}
+      onPressOut={() => setIsPressed(false)}
+      disabled={status === 'locked'}
+    >
       <View style={styles.container}>
         <View style={getBlobStyle()}>
           {renderIcon}
