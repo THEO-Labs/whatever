@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {NativeModules, StatusBar, StyleSheet, useColorScheme, View} from 'react-native';
 import {NavigationContainer, useNavigationContainerRef} from '@react-navigation/native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import AppNavigator from './src/navigation/AppNavigator';
 import {CustomHeader} from './src/components/CustomHeader';
 import {TrackerManager} from './src/utils/BackgroundTracker';
 import {calculateDailyActivityScores} from './src/utils/calculateActivityScore.ts';
-import {ActivityProvider} from "./src/utils/ActivityContext.tsx";
+import {ActivityProvider} from './src/utils/ActivityContext.tsx';
 
 const {PedometerModule} = NativeModules;
 
@@ -88,9 +87,9 @@ export default function App() {
           setCurrentRoute(navigationRef.getCurrentRoute()?.name);
         }}
       >
-        <SafeAreaView style={styles.navigator}>
+          <View style={styles.navigator}>
           <AppNavigator initialRoute={initialRoute} />
-        </SafeAreaView>
+          </View>
       </NavigationContainer>
         </ActivityProvider>
 

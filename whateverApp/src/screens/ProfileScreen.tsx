@@ -57,7 +57,7 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.weed,
+    backgroundColor: "#ffffff",
     paddingHorizontal: 20,
     paddingTop: 40,
   },
@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     borderWidth: 3,
     borderColor: Colors.green,
+    marginTop: 70,
   },
   gearIcon: {
     position: 'absolute',
@@ -135,7 +136,7 @@ const styles = StyleSheet.create({
   },
   overviewBox: {
     flex: 1,
-    backgroundColor: Colors.lime,
+    backgroundColor: Colors.weed,
     marginHorizontal: 5,
     padding: 16,
     borderRadius: 12,
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
   overviewValue: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: Colors.red,
+    color: "#000000",
   },
   overviewLabel: {
     fontSize: 12,
