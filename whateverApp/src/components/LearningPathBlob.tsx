@@ -15,7 +15,6 @@ export const LearningPathBlob: React.FC<LearningPathBlobProps> = ({
   phase,
   icon,
   label,
-  onPress,
 }) => {
   const [isPressed, setIsPressed] = useState(false);
   const getBlobStyle = () => {
@@ -86,19 +85,19 @@ export const LearningPathBlob: React.FC<LearningPathBlobProps> = ({
     : icon;
 
   return (
-    <Pressable
-      onPress={onPress}
-      onPressIn={() => setIsPressed(true)}
-      onPressOut={() => setIsPressed(false)}
-      disabled={status === 'locked'}
-    >
-      <View style={styles.container}>
-        <View style={getBlobStyle()}>
-          {renderIcon}
-        </View>
-        {label && <Text style={styles.label}>{label}</Text>}
+    <View style={styles.container}>
+      <View
+        style={getBlobStyle()}
+        onStartShouldSetResponder={() => {
+          if (status !== 'locked') setIsPressed(true);
+          return false;
+        }}
+        onResponderRelease={() => setIsPressed(false)}
+      >
+        {renderIcon}
       </View>
-    </Pressable>
+      {label && <Text style={styles.label}>{label}</Text>}
+    </View>
   );
 };
 

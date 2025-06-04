@@ -14,8 +14,8 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   root: {
-    flex: 1,               // ← critical
-    backgroundColor: '#fff'/* or leave transparent if gradient covers */,
+    flex: 1,
+    backgroundColor: '#fff',
   },
 });
 

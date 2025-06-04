@@ -17,9 +17,27 @@ import { trainingPlan } from '../assets/trainingPlan';
 import { LearningModal } from './LearningModal';
 
 /* ---------- small divider component -------------------------------- */
-const PhaseDivider = ({ label }: { label: string }) => (
-  <View style={styles.dividerOuter}>
-    <Text style={styles.dividerText}>{label}</Text>
+const PhaseDivider = ({
+                        label,
+                        phase,
+                      }: {
+  label: string;
+  phase: RowBlob['phase'];
+}) => (
+  <View
+    style={[
+      styles.dividerOuter,
+      { backgroundColor: phaseColors[phase].bg },
+    ]}
+  >
+    <Text
+      style={[
+        styles.dividerText,
+        { color: phaseColors[phase].text },
+      ]}
+    >
+      {label}
+    </Text>
   </View>
 );
 
@@ -44,6 +62,14 @@ type Row = RowBlob | RowDivider;
 
 /* ---------- phases -------------------------------------------------- */
 const phases = ['Menstruation', 'Follicular', 'Ovulation', 'Luteal'];
+
+const phaseColors: Record<RowBlob['phase'], { bg: string; text: string }> = {
+  Menstruation: { bg: Colors.mendark,   text: Colors.menlight },
+  Follicular:   { bg: Colors.follight,   text: Colors.foldark },
+  Ovulation:    { bg: Colors.ovudark,   text: Colors.ovulight },
+  Luteal:       { bg: Colors.luteallight, text: Colors.lutealdark },
+};
+
 
 /* ---------- transform trainingPlan into rows ----------------------- */
 const buildRows = (): Row[] => {
@@ -86,8 +112,8 @@ export const LearningPath = () => {
     outputRange: [
       Colors.raspberry, Colors.raspberry,
       Colors.weed,      Colors.weed,
-      Colors.green,     Colors.green,
-      Colors.red,       Colors.red,
+      Colors.luteallight,     Colors.luteallight,
+      Colors.weed,       Colors.weed,
     ],
     extrapolate: 'clamp',
   });
@@ -124,35 +150,39 @@ export const LearningPath = () => {
         })}
         renderItem={({ item, index }) => {
           if (item.kind === 'divider') {
-            return <PhaseDivider label={`${item.phase} Phase`} />;
+            return (
+              <PhaseDivider
+                label={`${item.phase} Phase`}
+                phase={item.phase}
+              />
+            );
           }
 
           return (
             <TouchableOpacity
               activeOpacity={0.7}
               onPress={() => {
-                const dayNumber = item.id;
-                const dayPlan = trainingPlan.find(p => p.day === dayNumber) || null;
+                const dayPlan = trainingPlan.find(p => p.day === item.id) || null;
                 if (dayPlan && item.status !== 'locked') {
                   setSelectedPlan(dayPlan);
                   setModalVisible(true);
                 }
               }}
               disabled={item.status === 'locked'}
+              style={{
+                width: 100,
+                alignItems: 'center',
+                marginVertical: 12,
+                alignSelf: 'center',
+                transform: [{ translateX: waveX(index, AMP, PERIOD) }],
+              }}
             >
-              <View
-                style={[
-                  styles.blobWrapper,
-                  { transform: [{ translateX: waveX(index, AMP, PERIOD) }] },
-                ]}
-              >
-                <LearningPathBlob
-                  status={item.status}
-                  phase={item.phase}
-                  icon={item.icon}
-                  label={item.label}
-                />
-              </View>
+              <LearningPathBlob
+                status={item.status}
+                phase={item.phase}
+                icon={item.icon}
+                label={item.label}
+              />
             </TouchableOpacity>
           );
         }}
@@ -175,20 +205,13 @@ const styles = StyleSheet.create({
   container: {
     paddingVertical: 12,
 },
-
-  blobWrapper: {
-    alignSelf: 'center',
-    width: '70%',
-    marginVertical: 12,
-  },
   dividerOuter: {
     alignSelf: 'center',
     width: '85%',
     paddingVertical: 20,
     paddingHorizontal: 24,
     marginVertical: 30,
-    borderRadius: 40,
-    backgroundColor: Colors.red,
+    borderRadius: 30,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.12,
