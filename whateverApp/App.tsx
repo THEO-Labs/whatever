@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StatusBar, StyleSheet, useColorScheme, View} from 'react-native';
+import {NativeModules, StatusBar, StyleSheet, useColorScheme, View} from 'react-native';
 import {NavigationContainer, useNavigationContainerRef} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -7,6 +7,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppNavigator from './src/navigation/AppNavigator';
 import {CustomHeader} from './src/components/CustomHeader';
 import {TrackerManager} from './src/utils/BackgroundTracker';
+import {calculateDailyActivityScores} from './src/utils/calculateActivityScore.ts';
+
+const {PedometerModule} = NativeModules;
 
 export default function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -21,6 +24,45 @@ export default function App() {
       setInitialRoute(completed === 'true' ? 'Home' : 'Onboarding');
     })();
   }, []);
+
+    useEffect(() => {
+        const interval = setInterval(async () => {
+            if (
+                !PedometerModule ||
+                typeof PedometerModule.getTodaySteps !== 'function'
+            ) {
+                console.warn(
+                    '[StepsPoller] PedometerModule.getTodaySteps nicht verfügbar.',
+                );
+                return;
+            }
+
+            try {
+                const steps = await PedometerModule.getTodaySteps();
+                const raw = await AsyncStorage.getItem('todayScores');
+                const existing = JSON.parse(raw || '{}');
+                const updated = {...existing, steps};
+                await AsyncStorage.setItem('todayScores', JSON.stringify(updated));
+            } catch (err) {
+                console.warn(
+                    '[StepsPoller] Fehler beim Abrufen oder Speichern der Schritte:',
+                    err,
+                );
+            }
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            calculateDailyActivityScores().catch(err => {
+                console.warn('[Recalc] Fehler beim Berechnen der Scores:', err);
+            });
+        }, 10_000);
+        return () => clearInterval(interval);
+    }, []);
+
 
   if (!initialRoute) {
     return null;

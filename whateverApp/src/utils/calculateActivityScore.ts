@@ -36,7 +36,6 @@ export const calculateDailyActivityScores = async (): Promise<
     const events = JSON.parse(raw || '[]')
       .filter((e: any) => e.type === 'native-activity')
       .sort((a: any, b: any) => a.timestamp - b.timestamp);
-    console.log('Alle Events geladen:', events.length);
     const scores: Record<
       string,
       {
