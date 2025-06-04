@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
-    shadowOffset: { width: 5, height: 5 },
+    shadowOffset: { width: 0, height: 7 },
     shadowOpacity: 1,
     shadowRadius: 0,
     elevation: 3,
@@ -66,17 +66,13 @@ const styles = StyleSheet.create({
 
   },
   inProgress: {
-    backgroundColor: Colors.red,
-    borderWidth: 2,
-    borderColor: "#B91C1C",
-    shadowColor: "#991B1B",
+    backgroundColor: "#F44336",
+    shadowColor: "#FF8A80",
 
   },
   completed: {
-    backgroundColor: Colors.lime,
-    borderWidth: 2,
-    borderColor: "#A8D13B",
-    shadowColor: "#7C9E2D",
+    backgroundColor: "#D4FC3F",
+    shadowColor: "#A4C600",
   },
   icon: {
     fontSize: 32,
