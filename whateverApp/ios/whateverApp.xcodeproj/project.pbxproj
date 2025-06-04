@@ -10,6 +10,7 @@
 		06AE894FE67B4FA995A61E04 /* PoseDetectionFrameProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0629E88E84478E9B71E240 /* PoseDetectionFrameProcessor.swift */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2BF974E12DF02C6000B401E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		2BF974E62DF0668100B401E2 /* PedometerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF974E52DF0668100B401E2 /* PedometerModule.m */; };
 		3F597BC0B8C89DC71C251A15 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		564B2C9C2DEF360100CA6F9F /* PedometerModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564B2C9B2DEF360000CA6F9F /* PedometerModule.swift */; };
 		61C20FDEEB87446FA55A0EC2 /* PoseDetectionFrameProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EA17E82B7C49F7ABC391E0 /* PoseDetectionFrameProcessor.m */; };
@@ -25,6 +26,8 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = whateverApp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = whateverApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = whateverApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		2BF974E32DF0667100B401E2 /* whateverApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "whateverApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		2BF974E52DF0668100B401E2 /* PedometerModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PedometerModule.m; sourceTree = "<group>"; };
 		3A0629E88E84478E9B71E240 /* PoseDetectionFrameProcessor.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; path = PoseDetectionFrameProcessor.swift; sourceTree = "<group>"; };
 		46EA17E82B7C49F7ABC391E0 /* PoseDetectionFrameProcessor.m */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.objc; path = PoseDetectionFrameProcessor.m; sourceTree = "<group>"; };
 		564B2C9B2DEF360000CA6F9F /* PedometerModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerModule.swift; sourceTree = "<group>"; };
@@ -49,6 +52,8 @@
 		13B07FAE1A68108700A75B9A /* whateverApp */ = {
 			isa = PBXGroup;
 			children = (
+				2BF974E52DF0668100B401E2 /* PedometerModule.m */,
+				2BF974E32DF0667100B401E2 /* whateverApp-Bridging-Header.h */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				761780EC2CA45674006654EE /* AppDelegate.swift */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -275,6 +280,7 @@
 				2BF974E12DF02C6000B401E2 /* (null) in Sources */,
 				564B2C9C2DEF360100CA6F9F /* PedometerModule.swift in Sources */,
 				761780ED2CA45674006654EE /* AppDelegate.swift in Sources */,
+				2BF974E62DF0668100B401E2 /* PedometerModule.m in Sources */,
 				61C20FDEEB87446FA55A0EC2 /* PoseDetectionFrameProcessor.m in Sources */,
 				06AE894FE67B4FA995A61E04 /* PoseDetectionFrameProcessor.swift in Sources */,
 			);

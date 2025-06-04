@@ -26,8 +26,9 @@ export const TrackerManager: React.FC = () => {
       'ActivityUpdate',
       async event => {
         const type = event.activity;
+        console.log('[TrackerManager] ActivityUpdate received:', type);
         if (
-            (type === 'walking' || type === 'running' || type === 'cycling' || type === 'unkown') && event.confidence > 0.5
+            (type === 'walking' || type === 'running' || type === 'cycling' || type === 'unknown')
         ) {
           setActivity('active');
         } else {
