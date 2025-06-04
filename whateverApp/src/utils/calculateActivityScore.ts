@@ -6,7 +6,7 @@ const activityWeights: Record<string, number> = {
   cycling: 1.5,
   automotive: 0.3,
   stationary: 0,
-  unknown: 0,
+  unknown: 1.0,
 };
 
 const restWeights: Record<string, number> = {
