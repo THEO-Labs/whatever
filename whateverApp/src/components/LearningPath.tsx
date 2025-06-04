@@ -102,7 +102,7 @@ export const LearningPath = () => {
         data={rows}
         inverted
         keyExtractor={(row) => String(row.id)}
-        contentContainerStyle={styles.container}
+        contentContainerStyle={[styles.container, { paddingBottom: 280 }]}
         scrollEventThrottle={16}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
           useNativeDriver: false,
