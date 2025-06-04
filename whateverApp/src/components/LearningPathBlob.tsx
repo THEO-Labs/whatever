@@ -1,6 +1,27 @@
-import React, { useState } from "react";
+import React, { cloneElement, isValidElement } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import Colors from '../design/colors';
+
+const completedBgColor = {
+  menstruation: Colors.mendark,
+  follicular: '#CEF249',
+  ovulation: Colors.ovudark,
+  luteal: '#FFC1C8',
+};
+
+const completedShadowColor = {
+  menstruation: Colors.menlight,
+  follicular: '#a5ce10',
+  ovulation: Colors.green,
+  luteal: '#e7848f',
+};
+
+const completedIconColor = {
+  menstruation: '#FFCFCF',
+  follicular:   '#058849',
+  ovulation:    '#CEF249',
+  luteal:       '#F25E5E',
+};
 
 interface LearningPathBlobProps {
   status: 'locked' | 'in-progress' | 'completed';
@@ -15,68 +36,63 @@ export const LearningPathBlob: React.FC<LearningPathBlobProps> = ({
   phase,
   icon,
   label,
+  onPress,
 }) => {
-  const [isPressed, setIsPressed] = useState(false);
-  const getBlobStyle = () => {
+/*   const [isPressed, setIsPressed] = useState(false);
+ */  const getBlobStyle = (pressed: boolean) => {
   if (status === 'locked') {
     return {
       ...styles.blob,
-      ...styles.locked,
+      backgroundColor: Colors.comlight,
+      shadowColor: Colors.comdark,
+      shadowOffset: { width: 0, height: 8 },
+      shadowOpacity: 1,
+      shadowRadius: 0,
     };
   }
 
   if (status === 'completed') {
     return {
       ...styles.blob,
-      ...styles.completed,
-      borderWidth: isPressed ? 2 : 0,
-      borderColor: isPressed ? '#00000030' : 'transparent',
+      backgroundColor: pressed ? '#E6E9DC' : completedBgColor[phase] || '#ccc',
+      shadowColor: completedShadowColor[phase],
+      shadowOffset: { width: 0, height: 8 },
+      shadowOpacity: 1,
+      shadowRadius: 0,
     };
   }
 
-  const phaseShadowColor = {
-    menstruation: Colors.menlight,
-    follicular: Colors.follight,
-    ovulation: Colors.ovulight,
-    luteal: Colors.luteallight,
-  };
+  // For in-progress
+    return {
+      ...styles.blob,
+      backgroundColor: '#C9F3E2', // ← your specific BG color
+      shadowColor: '#05A680',     // ← your specific shadow color
+      shadowOffset: { width: 0, height: 8 },
+      shadowRadius: 0,
+      shadowOpacity: 1,
+    };
+}
 
-  const phaseBgColor = {
-    menstruation: Colors.mendark,
-    follicular: Colors.foldark,
-    ovulation: Colors.ovudark,
-    luteal: Colors.lutealdark,
-  };
+  const iconColor = (() => {
+    if (status === 'in-progress') return '#1C3D36';
+    if (status === 'completed')   return completedIconColor[phase];
+    return Colors.comdark; // locked
+  })();
 
-  return {
-    ...styles.blob,
-    backgroundColor: phaseBgColor[phase],
-    shadowColor: phaseShadowColor[phase],
-    shadowOffset: { width: 0, height: 7 },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    elevation: 5,
-    borderWidth: isPressed ? 2 : 0,
-    borderColor: isPressed ? '#00000030' : 'transparent',
-  };
-};
-
-  const renderIcon = typeof icon === 'string'
-    ? <Text style={styles.icon}>{icon}</Text>
-    : icon;
+  const renderIcon =
+    isValidElement(icon)
+      ? cloneElement(icon as React.ReactElement<any>, { color: iconColor } as any)
+      : <Text style={[styles.icon, { color: iconColor }]}>{icon}</Text>;
 
   return (
     <View style={styles.container}>
-      <View
-        style={getBlobStyle()}
-        onStartShouldSetResponder={() => {
-          if (status !== 'locked') setIsPressed(true);
-          return false;
-        }}
-        onResponderRelease={() => setIsPressed(false)}
+     <Pressable
+        onPress={onPress}
+        disabled={status === 'locked'}
+        style={({ pressed }) => getBlobStyle(pressed)}
       >
         {renderIcon}
-      </View>
+      </Pressable>
       {label && <Text style={styles.label}>{label}</Text>}
     </View>
   );
@@ -87,27 +103,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   blob: {
-    width: 100,
-    height: 80,
-    borderRadius: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-    shadowOffset: { width: 0, height: 7 },
-    shadowOpacity: 1,
-    shadowRadius: 0,
-    elevation: 3,
-  },
-  locked: {
-    backgroundColor: "#D1D5DB",
-    borderWidth: 2,
-    borderColor: "#9CA3AF",
-    shadowColor: "#6B7280",
-  },
-  completed: {
-    backgroundColor: Colors.comdark,
-    shadowColor: Colors.comlight,
-  },
+  width: 100,
+  height: 80,
+  borderRadius: 40,
+  justifyContent: 'center',
+  alignItems: 'center',
+  position: 'relative',
+},
   icon: {
     fontSize: 32,
   },
