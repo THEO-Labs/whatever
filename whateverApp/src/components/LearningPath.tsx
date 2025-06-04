@@ -1,7 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import {
   View,
   Animated,
+  FlatList,
   StyleSheet,
   Text,
   useWindowDimensions,
@@ -17,6 +18,8 @@ const PhaseDivider = ({ label }: { label: string }) => (
     <Text style={styles.dividerText}>{label}</Text>
   </View>
 );
+
+
 
 /* ---------- types --------------------------------------------------- */
 type Status = 'locked' | 'in-progress' | 'completed';
@@ -68,6 +71,26 @@ const rows: Row[] = (() => {
   return arr;
 })();
 
+/* ---------- scroll to beginning when loaded -------------------------------- */
+
+const flatListRef = useRef<FlatList>(null);
+
+const todayIndex = rows.findIndex(
+  (item) => item.kind === 'blob' && item.status === 'in-progress'
+);
+
+useEffect(() => {
+  const timeout = setTimeout(() => {
+    if (todayIndex !== -1 && flatListRef.current) {
+      flatListRef.current.scrollToIndex({ index: todayIndex, animated: false });
+    }
+  }, 100); // wait for layout
+
+  return () => clearTimeout(timeout);
+}, []);
+
+
+
 /* ---------- helpers ------------------------------------------------- */
 const waveX = (idx: number, amp: number, per: number) =>
   amp * Math.sin((2 * Math.PI * idx) / per);
@@ -99,6 +122,7 @@ export const LearningPath = () => {
     <View style={{ flex: 1 }}>
       <Animated.View style={[StyleSheet.absoluteFill, { backgroundColor: bgColor, opacity: 0.3 }]} />
       <Animated.FlatList
+        ref={flatListRef}
         data={rows}
         inverted
         keyExtractor={(row) => String(row.id)}
@@ -106,6 +130,11 @@ export const LearningPath = () => {
         scrollEventThrottle={16}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
           useNativeDriver: false,
+        })}
+        getItemLayout={(_, index) => ({
+            length: 110,
+            offset: 110 * index,
+            index,
         })}
         renderItem={({ item, index }) => {
           if (item.kind === 'divider') {
