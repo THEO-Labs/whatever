@@ -82,7 +82,10 @@ const todayIndex = rows.findIndex(
 useEffect(() => {
   const timeout = setTimeout(() => {
     if (todayIndex !== -1 && flatListRef.current) {
-      flatListRef.current.scrollToIndex({ index: todayIndex, animated: false });
+      flatListRef.current.scrollToIndex({ 
+        index: todayIndex, 
+        animated: false,
+       });
     }
   }, 100); // wait for layout
 
