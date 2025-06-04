@@ -5,6 +5,7 @@ import Colors from '../design/colors';
 
 interface LearningPathBlobProps {
   status: 'locked' | 'in-progress' | 'completed';
+  
   icon: React.ReactNode | string;
   label?: string;
   onPress?: () => void;
