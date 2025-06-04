@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -26,7 +26,7 @@ export const LearningModal: React.FC<LearningModalProps> = ({
   return (
     <Modal
       visible={visible}
-      animationType="slide"
+      animationType="fade"
       transparent
       onRequestClose={onRequestClose}
     >

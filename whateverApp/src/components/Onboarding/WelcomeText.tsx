@@ -17,7 +17,7 @@ export default function WelcomeText() {
           textAlign: 'center',
           marginBottom: 8,
         }}>
-        Hey! Schön, dass du da bist{' '}
+        Welcome! We're glad you're here{' '}
         <Animated.Text style={{transform: [{rotate}]}}>👋</Animated.Text>
       </Text>
       <Text
@@ -26,7 +26,7 @@ export default function WelcomeText() {
           fontSize: 16,
           opacity: 0.9,
         }}>
-        Erzähl uns ein wenig über dich – so kann die App dich besser begleiten.
+        Tell us a bit about yourself - so we can tailor the experience just for you.
       </Text>
     </View>
   );
