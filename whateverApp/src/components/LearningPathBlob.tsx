@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import Colors from '../design/colors';
 
@@ -22,8 +22,10 @@ export const LearningPathBlob: React.FC<LearningPathBlobProps> = ({
   if (status === 'locked') {
     return {
       ...styles.blob,
-      backgroundColor: Colors.comdark,
-      shadowColor: Colors.comlight,
+      backgroundColor: Colors.comlight,
+      shadowColor: Colors.comdark,
+      shadowOffset: { width: 0, height: 8 },
+      shadowOpacity: 1,
     };
   }
 
@@ -37,8 +39,8 @@ export const LearningPathBlob: React.FC<LearningPathBlobProps> = ({
 
     const completedShadowColor = {
       menstruation: Colors.menlight,
-      follicular: Colors.follight,
-      ovulation: Colors.ovulight,
+      follicular: Colors.green,
+      ovulation: Colors.green,
       luteal: Colors.luteallight,
     };
 
@@ -46,10 +48,8 @@ export const LearningPathBlob: React.FC<LearningPathBlobProps> = ({
       ...styles.blob,
       backgroundColor: pressed ? '#E6E9DC' : completedBgColor[phase] || '#ccc',
       shadowColor: completedShadowColor[phase],
-      shadowOffset: { width: 0, height: 7 },
+      shadowOffset: { width: 0, height: 8 },
       shadowOpacity: 1,
-      shadowRadius: 6,
-      elevation: 5,
     };
   }
 
@@ -63,25 +63,7 @@ export const LearningPathBlob: React.FC<LearningPathBlobProps> = ({
     shadowRadius: 6,
     elevation: 5,
   };
-};
-
-
-
-  const phaseShadowColor = {
-    menstruation: Colors.menlight,
-    follicular: Colors.follight,
-    ovulation: Colors.ovulight,
-    luteal: Colors.luteallight,
-  };
-
-  const phaseBgColor = {
-    menstruation: Colors.mendark,
-    follicular: Colors.foldark,
-    ovulation: Colors.ovudark,
-    luteal: Colors.lutealdark,
-  };
-
- 
+}
 
   const renderIcon = typeof icon === 'string'
     ? <Text style={styles.icon}>{icon}</Text>
@@ -114,7 +96,6 @@ const styles = StyleSheet.create({
   position: 'relative',
 
 },
-  
 
   icon: {
     fontSize: 32,

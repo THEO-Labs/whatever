@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Text,
   useWindowDimensions,
-  TouchableOpacity,
 } from 'react-native';
 
 import { LearningPathBlob } from './LearningPathBlob';
@@ -189,10 +188,10 @@ export const LearningPath = () => {
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
         dayPlan={selectedPlan}
-        
+
       />
       {/* Show popup only if showPopup is true */}
-      
+
     </View>
   );
 };
