@@ -20,7 +20,6 @@ export default function App() {
 
     useEffect(() => {
     (async () => {
-        await AsyncStorage.clear();
       const completed = await AsyncStorage.getItem('onboardingComplete');
       setInitialRoute(completed === 'true' ? 'Home' : 'Onboarding');
     })();

@@ -27,8 +27,7 @@ export const TrackerManager: React.FC = () => {
       async event => {
         const type = event.activity;
         if (
-            (type === 'walking' || type === 'running' || type === 'cycling') &&
-            event.confidence !== 'low'
+            (type === 'walking' || type === 'running' || type === 'cycling' || type === 'unkown') && event.confidence > 0.5
         ) {
           setActivity('active');
         } else {
@@ -49,10 +48,9 @@ export const TrackerManager: React.FC = () => {
     };
   }, []);
 
-  return null; // Unsichtbare Komponente
+  return null;
 };
 
-// 🔁 Buffer speichern
 const saveToBuffer = async (event: object) => {
   try {
     const existing = await AsyncStorage.getItem('trackBuffer');
