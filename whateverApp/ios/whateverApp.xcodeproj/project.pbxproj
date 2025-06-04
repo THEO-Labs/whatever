@@ -10,9 +10,9 @@
 		06AE894FE67B4FA995A61E04 /* PoseDetectionFrameProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0629E88E84478E9B71E240 /* PoseDetectionFrameProcessor.swift */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2BF974E12DF02C6000B401E2 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		2BF974E62DF0668100B401E2 /* PedometerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF974E52DF0668100B401E2 /* PedometerModule.m */; };
 		3F597BC0B8C89DC71C251A15 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		564B2C9C2DEF360100CA6F9F /* PedometerModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564B2C9B2DEF360000CA6F9F /* PedometerModule.swift */; };
+		569488AB2DF0670500677ECA /* PedometerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 569488A92DF0670500677ECA /* PedometerModule.m */; };
 		61C20FDEEB87446FA55A0EC2 /* PoseDetectionFrameProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EA17E82B7C49F7ABC391E0 /* PoseDetectionFrameProcessor.m */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -26,11 +26,11 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = whateverApp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = whateverApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = whateverApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		2BF974E32DF0667100B401E2 /* whateverApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "whateverApp-Bridging-Header.h"; sourceTree = "<group>"; };
-		2BF974E52DF0668100B401E2 /* PedometerModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PedometerModule.m; sourceTree = "<group>"; };
 		3A0629E88E84478E9B71E240 /* PoseDetectionFrameProcessor.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; path = PoseDetectionFrameProcessor.swift; sourceTree = "<group>"; };
 		46EA17E82B7C49F7ABC391E0 /* PoseDetectionFrameProcessor.m */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.objc; path = PoseDetectionFrameProcessor.m; sourceTree = "<group>"; };
 		564B2C9B2DEF360000CA6F9F /* PedometerModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerModule.swift; sourceTree = "<group>"; };
+		569488A92DF0670500677ECA /* PedometerModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PedometerModule.m; sourceTree = "<group>"; };
+		569488AA2DF0670500677ECA /* whateverApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "whateverApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = whateverApp/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = whateverApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9CE66ED05F55C0C92B136EFF /* Pods-whateverApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-whateverApp.debug.xcconfig"; path = "Target Support Files/Pods-whateverApp/Pods-whateverApp.debug.xcconfig"; sourceTree = "<group>"; };
@@ -52,8 +52,8 @@
 		13B07FAE1A68108700A75B9A /* whateverApp */ = {
 			isa = PBXGroup;
 			children = (
-				2BF974E52DF0668100B401E2 /* PedometerModule.m */,
-				2BF974E32DF0667100B401E2 /* whateverApp-Bridging-Header.h */,
+				569488A92DF0670500677ECA /* PedometerModule.m */,
+				569488AA2DF0670500677ECA /* whateverApp-Bridging-Header.h */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				761780EC2CA45674006654EE /* AppDelegate.swift */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -236,13 +236,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-whateverApp/Pods-whateverApp-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-whateverApp/Pods-whateverApp-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -257,13 +253,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-whateverApp/Pods-whateverApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-whateverApp/Pods-whateverApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -280,7 +272,7 @@
 				2BF974E12DF02C6000B401E2 /* (null) in Sources */,
 				564B2C9C2DEF360100CA6F9F /* PedometerModule.swift in Sources */,
 				761780ED2CA45674006654EE /* AppDelegate.swift in Sources */,
-				2BF974E62DF0668100B401E2 /* PedometerModule.m in Sources */,
+				569488AB2DF0670500677ECA /* PedometerModule.m in Sources */,
 				61C20FDEEB87446FA55A0EC2 /* PoseDetectionFrameProcessor.m in Sources */,
 				06AE894FE67B4FA995A61E04 /* PoseDetectionFrameProcessor.swift in Sources */,
 			);
@@ -296,7 +288,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = CXX54B75RT;
+				DEVELOPMENT_TEAM = 8C3G89D7KS;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = whateverApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -310,8 +302,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.theo.zyra;
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.theo.zyraapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.leon.test.app;
 				PRODUCT_NAME = whateverApp;
 				SWIFT_OBJC_BRIDGING_HEADER = "whateverApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -327,7 +318,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = CXX54B75RT;
+				DEVELOPMENT_TEAM = 8C3G89D7KS;
 				INFOPLIST_FILE = whateverApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -340,8 +331,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.theo.zyra;
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.theo.zyraapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.leon.test.app;
 				PRODUCT_NAME = whateverApp;
 				SWIFT_OBJC_BRIDGING_HEADER = "whateverApp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
