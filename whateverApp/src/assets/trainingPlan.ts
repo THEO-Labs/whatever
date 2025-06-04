@@ -35,12 +35,6 @@ const P = (
 });
 
 /**
- * (For demonstration) let’s assume “today” is Day 2.
- * In a real app, you could compute `isToday` by comparing `new Date()` to a stored cycle‐start date.
- */
-const TODAY = 2;
-
-/**
  * Sarah’s 28‐day training plan, now with `active` and `isToday`.
  * - Days < TODAY → active = true, isToday = false
  * - Day == TODAY → active = true, isToday = true
