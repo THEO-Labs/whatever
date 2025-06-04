@@ -48,7 +48,7 @@ export default function Step1() {
                         minWidth: '95%',
                     }}>
                     <Text style={{marginBottom: 8, fontWeight: '500'}}>
-                        Wie dürfen wir dich nennen?
+                      What should we call you?
                     </Text>
                     <TextInput
                         placeholder="Charlie"
@@ -72,7 +72,7 @@ export default function Step1() {
                     }}
                     activeOpacity={0.8}
                     disabled={name.length < 2}>
-                    <Text style={styles.nextButtonText}>Weiter</Text>
+                    <Text style={styles.nextButtonText}>Next</Text>
                 </TouchableOpacity>
                 <View style={styles.progressContainer}>
                     {Array.from({length: 7}).map((_, index) => (
