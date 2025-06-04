@@ -25,13 +25,13 @@ const PhaseDivider = ({
 }) => (
   <View
     style={[
-      styles.dividerOuter,
+      lpStyles.dividerOuter,
       { backgroundColor: phaseColors[phase].bg },
     ]}
   >
     <Text
       style={[
-        styles.dividerText,
+        lpStyles.dividerText,
         { color: phaseColors[phase].text },
       ]}
     >
@@ -60,7 +60,7 @@ interface RowDivider {
 type Row = RowBlob | RowDivider;
 
 /* ---------- phases -------------------------------------------------- */
-const phases = ['Menstruation', 'Follicular', 'Ovulation', 'Luteal'];
+const phases = ['Menstrual', 'Follicular', 'Ovulation', 'Luteal'];
 
 const phaseColors: Record<RowBlob['phase'], { bg: string; text: string }> = {
   Menstruation: { bg: Colors.mendark,   text: Colors.menlight },
@@ -101,18 +101,32 @@ export const LearningPath = () => {
   const PERIOD = 8;
 
   const ITEM_H = 110;
-  const TOTAL_H = ITEM_H * rows.length;
-  const Q = TOTAL_H / 4;
-  const F = 40;
+
+  /* one phase spans seven rows → use that to drive colour cross‑fade */
+  const PHASE_H = ITEM_H * 7;
+  const TRANSITION = 60;          // px overlap for a soft blend
 
   const scrollY = useRef(new Animated.Value(0)).current;
   const bgColor = scrollY.interpolate({
-    inputRange: [0, Q - F, Q + F, 2 * Q - F, 2 * Q + F, 3 * Q - F, 3 * Q + F, TOTAL_H],
+    inputRange: [
+      0,
+      PHASE_H - TRANSITION,
+      PHASE_H + TRANSITION,
+      2 * PHASE_H - TRANSITION,
+      2 * PHASE_H + TRANSITION,
+      3 * PHASE_H - TRANSITION,
+      3 * PHASE_H + TRANSITION,
+      4 * PHASE_H,
+    ],
     outputRange: [
-      Colors.raspberry, Colors.raspberry,
-      Colors.weed,      Colors.weed,
-      Colors.luteallight,     Colors.luteallight,
-      Colors.weed,       Colors.weed,
+      phaseColors.Menstruation.bg,
+      phaseColors.Menstruation.bg,
+      phaseColors.Follicular.bg,
+      phaseColors.Follicular.bg,
+      phaseColors.Ovulation.bg,
+      phaseColors.Ovulation.bg,
+      phaseColors.Luteal.bg,
+      phaseColors.Luteal.bg,
     ],
     extrapolate: 'clamp',
   });
@@ -132,12 +146,12 @@ export const LearningPath = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <Animated.View style={[StyleSheet.absoluteFill, { backgroundColor: bgColor, opacity: 0.3 }]} />
+      <Animated.View style={[StyleSheet.absoluteFill, { backgroundColor: bgColor, opacity: 0.1 }]} />
       <Animated.FlatList
         ref={flatListRef}
         data={rows}
         keyExtractor={(row) => String(row.id)}
-        contentContainerStyle={[styles.container, { paddingTop: 280 }]}
+        contentContainerStyle={[lpStyles.container, { paddingTop: 280 }]}
         scrollEventThrottle={16}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
           useNativeDriver: false,
@@ -201,7 +215,7 @@ const waveX = (idx: number, amp: number, per: number) =>
   amp * Math.sin((2 * Math.PI * idx) / per);
 
 /* ---------- styles -------------------------------------------------- */
-const styles = StyleSheet.create({
+const lpStyles = StyleSheet.create({
   container: {
     paddingVertical: 12,
 },

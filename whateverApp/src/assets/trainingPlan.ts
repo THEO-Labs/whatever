@@ -78,8 +78,8 @@ If you feel like you want to do some physical activity, here's a plan for stretc
     `Choose a gentle walk of low intensity with duration of around 20 minutes. 
 If you don't feel like going for a walk, try to stay active during general activity—take the stairs, reduce time sitting, do some arm cycling or take some fresh air.`,
     /* active */ true,
-    /* isToday */ true
-  ),
+  /* isToday */ false,
+    ),
 
   // Day 3
   P(
@@ -99,7 +99,7 @@ If you don't feel like going for a walk, try to stay active during general activ
   // Day 4
   P(
     4,
-    'Follicular',
+    'Menstruation',
     'Endurance Basics',
     [
       'Training: walk or easy cycling',
@@ -114,7 +114,7 @@ If you don't feel like going for a walk, try to stay active during general activ
   // Day 5
   P(
     5,
-    'Follicular',
+    'Menstruation',
     'Preparation Day',
     [
       'Dynamic stretching routine',
@@ -129,7 +129,7 @@ If you don't feel like going for a walk, try to stay active during general activ
   // Day 6
   P(
     6,
-    'Follicular',
+    'Menstruation',
     'Lower Body Strength',
     [
       'Home workout: lower body focus',
@@ -163,7 +163,7 @@ Cool-down (hold each 45 s):
   // Day 7
   P(
     7,
-    'Follicular',
+    'Menstruation',
     'Rest Day',
     [
       'Recovery from strength training',
@@ -242,13 +242,13 @@ Cool-down:
     `Yesterday was an intense training. Give your body time to rest!
 If you feel like you could have worked out more yesterday, give feedback on the training plan and we will consider it when updating your training plan next time.`,
     /* active */ true,
-    /* isToday */ false
+    /* isToday */ false,
   ),
 
   // Day 11
   P(
     11,
-    'Luteal',
+    'Ovulation',
     'Moderate Endurance',
     [
       'Walk, swim, or light cycling',
@@ -256,14 +256,14 @@ If you feel like you could have worked out more yesterday, give feedback on the 
       'Stay hydrated and take breaks',
     ],
     undefined,
-    /* active */ false,
+    /* active */ true,
     /* isToday */ false
   ),
 
   // Day 12
   P(
     12,
-    'Luteal',
+    'Ovulation',
     'Mobility & Stretching',
     [
       'Gentle mobility drills',
@@ -271,14 +271,14 @@ If you feel like you could have worked out more yesterday, give feedback on the 
       'Optional foam rolling',
     ],
     undefined,
-    /* active */ false,
+    /* active */ true,
     /* isToday */ false
   ),
 
   // Day 13
   P(
     13,
-    'Luteal',
+    'Ovulation',
     'Strength Maintenance',
     [
       'Bodyweight or resistance band training',
@@ -286,14 +286,14 @@ If you feel like you could have worked out more yesterday, give feedback on the 
       'Light reps, no max effort',
     ],
     undefined,
-    /* active */ false,
+    /* active */ true,
     /* isToday */ false
   ),
 
   // Day 14
   P(
     14,
-    'Luteal',
+    'Ovulation',
     'Rest Day',
     [
       'Full recovery',
@@ -301,7 +301,7 @@ If you feel like you could have worked out more yesterday, give feedback on the 
       'Hydration and nutrition',
     ],
     undefined,
-    /* active */ false,
+    /* active */ true,
     /* isToday */ false
   ),
 
@@ -316,7 +316,7 @@ If you feel like you could have worked out more yesterday, give feedback on the 
       'Focus on rhythm and breath',
     ],
     undefined,
-    /* active */ false,
+    /* active */ true,
     /* isToday */ false
   ),
 
@@ -331,7 +331,7 @@ If you feel like you could have worked out more yesterday, give feedback on the 
       'Stretch thoroughly after',
     ],
     undefined,
-    /* active */ false,
+    /* active */ true,
     /* isToday */ false
   ),
 
@@ -346,14 +346,14 @@ If you feel like you could have worked out more yesterday, give feedback on the 
       'Reflect on training week',
     ],
     undefined,
-    /* active */ false,
+    /* active */ true,
     /* isToday */ false
   ),
 
   // Day 18
   P(
     18,
-    'Menstruation',
+    'Luteal',
     'Self-Care Day',
     [
       'Short walk or complete rest',
@@ -361,14 +361,14 @@ If you feel like you could have worked out more yesterday, give feedback on the 
       'Check-in with your body',
     ],
     undefined,
-    /* active */ false,
+    /* active */ true,
     /* isToday */ false
   ),
 
   // Day 19
   P(
     19,
-    'Menstruation',
+    'Luteal',
     'Mobility & Core',
     [
       'Stretching for hips/lower back',
@@ -376,14 +376,14 @@ If you feel like you could have worked out more yesterday, give feedback on the 
       'Deep breathing exercises',
     ],
     undefined,
-    /* active */ false,
+    /* active */ true,
     /* isToday */ false
   ),
 
   // Day 20
   P(
     20,
-    'Menstruation',
+    'Luteal',
     'Low Impact Strength',
     [
       'Short, bodyweight circuit',
@@ -391,14 +391,14 @@ If you feel like you could have worked out more yesterday, give feedback on the 
       'Rest as needed',
     ],
     undefined,
-    /* active */ false,
+    /* active */ true,
     /* isToday */ false
   ),
 
   // Day 21
   P(
     21,
-    'Follicular',
+    'Luteal',
     'Endurance Restart',
     [
       'Walk, cycle, or dance workout',
@@ -406,7 +406,7 @@ If you feel like you could have worked out more yesterday, give feedback on the 
       'Enjoy movement',
     ],
     undefined,
-    /* active */ false,
+    /* active */ true,
     /* isToday */ false
   ),
 
@@ -421,7 +421,7 @@ If you feel like you could have worked out more yesterday, give feedback on the 
       'Include hip mobility work',
     ],
     undefined,
-    /* active */ false,
+    /* active */ true,
     /* isToday */ false
   ),
 
@@ -436,7 +436,7 @@ If you feel like you could have worked out more yesterday, give feedback on the 
       'Breath-led movement',
     ],
     undefined,
-    /* active */ false,
+    /* active */ true,
     /* isToday */ false
   ),
 
@@ -451,14 +451,14 @@ If you feel like you could have worked out more yesterday, give feedback on the 
       'Recovery snack afterwards',
     ],
     undefined,
-    /* active */ false,
+    /* active */ true,
     /* isToday */ false
   ),
 
   // Day 25
   P(
     25,
-    'Ovulation',
+    'Follicular',
     'Power Strength',
     [
       'Upper-body push & pull',
@@ -466,14 +466,14 @@ If you feel like you could have worked out more yesterday, give feedback on the 
       'Track progress',
     ],
     undefined,
-    /* active */ false,
-    /* isToday */ false
+    /* active */ true,
+    /* isToday */ true,
   ),
 
   // Day 26
   P(
     26,
-    'Ovulation',
+    'Follicular',
     'Interval Cardio',
     [
       'Short sprints or HIIT (20 mins)',
@@ -488,7 +488,7 @@ If you feel like you could have worked out more yesterday, give feedback on the 
   // Day 27
   P(
     27,
-    'Ovulation',
+    'Follicular',
     'Stretch & Mobility',
     [
       'Full body stretches',
@@ -503,7 +503,7 @@ If you feel like you could have worked out more yesterday, give feedback on the 
   // Day 28
   P(
     28,
-    'Luteal',
+    'Follicular',
     'Mindful Movement',
     [
       'Choose your favorite gentle workout',
