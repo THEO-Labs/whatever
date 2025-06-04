@@ -15,7 +15,6 @@ export const LearningPathBlob: React.FC<LearningPathBlobProps> = ({
   phase,
   icon,
   label,
-  onPress,
 }) => {
   const [isPressed, setIsPressed] = useState(false);
   const getBlobStyle = () => {
