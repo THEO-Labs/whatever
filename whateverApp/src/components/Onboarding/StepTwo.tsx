@@ -1,13 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View,} from 'react-native';
 import {RulerPicker} from 'react-native-ruler-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -94,7 +86,7 @@ export default function StepTwo({
             🌸 Zyklus-Check
           </Text>
           <Image
-            source={require('../../assets/pictures/logo.png')}
+              source={require('../../assets/pictures/logo.jpg')}
             style={{width: 48, height: 48, borderRadius: 12}}
           />
         </View>

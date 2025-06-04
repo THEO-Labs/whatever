@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  Animated,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Animated, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View,} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WelcomeText from './WelcomeText.tsx';
 import {RulerPicker} from 'react-native-ruler-picker';
@@ -66,7 +57,7 @@ export default function StepOne({
       {/* Logo */}
       <View style={{alignItems: 'center', marginBottom: 24}}>
         <Image
-          source={require('../../assets/pictures/logo.png')}
+          source={require('../../assets/pictures/logo.jpg')}
           style={{
             width: 140,
             height: 140,
@@ -87,7 +78,7 @@ export default function StepOne({
           borderWidth: 2,
           minWidth: '95%',
         }}>
-        <Text style={{marginBottom: 8, fontWeight: '500', color: '#fff'}}>
+          <Text style={{marginBottom: 8, fontWeight: '500'}}>
           Wie dürfen wir dich nennen?
         </Text>
         <TextInput
@@ -116,7 +107,6 @@ export default function StepOne({
         <Text
           style={{
             fontWeight: '500',
-            color: '#fff',
           }}>
           Verrätst du uns dein Alter?
         </Text>

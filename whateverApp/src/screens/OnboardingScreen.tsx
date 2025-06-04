@@ -21,8 +21,10 @@ export default function OnboardingScreen({navigation}: Props) {
   };
 
   return (
-    <LinearGradient
-      colors={['rgba(19, 64, 22, 1.0)', 'rgba(187, 217, 173, 1.0)']}
+      <LinearGradient
+          colors={['#F4FCD9', '#FBC5D1']}
+          start={{ x: 0.5, y: 0 }}
+          end={{ x: 0.5, y: 1 }}
       style={{flex: 1}}>
       <View style={{flex: 1}}>
         {step === 0 && (

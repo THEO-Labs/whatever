@@ -17,8 +17,8 @@ export default function App() {
   const [currentRoute, setCurrentRoute] = useState<string>();
   const [initialRoute, setInitialRoute] = useState<'Onboarding' | 'Home' | null>(null);
 
-  // Determine initial screen based on onboarding
-  useEffect(() => {
+
+    useEffect(() => {
     (async () => {
       const completed = await AsyncStorage.getItem('onboardingComplete');
       setInitialRoute(completed === 'true' ? 'Home' : 'Onboarding');
