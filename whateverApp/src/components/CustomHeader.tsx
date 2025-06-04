@@ -117,8 +117,7 @@ const styles = StyleSheet.create({
     top: 90,
     left: 16,
     right: 16,
-    paddingBottom: 16,
-    backgroundColor: 'rgba(255,255,255,0.9)',
+    backgroundColor: 'rgba(255,255,255,1.0)',
     borderRadius: 16,
     zIndex: 1000,
     elevation: 10,
@@ -129,7 +128,5 @@ const styles = StyleSheet.create({
   circles: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 24,
-    gap: 12,
   },
 });
