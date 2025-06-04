@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		06AE894FE67B4FA995A61E04 /* PoseDetectionFrameProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0629E88E84478E9B71E240 /* PoseDetectionFrameProcessor.swift */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		2BF974E12DF02C6000B401E2 /* PedometerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF974DF2DF02C6000B401E2 /* PedometerModule.m */; };
 		3F597BC0B8C89DC71C251A15 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		564B2C9C2DEF360100CA6F9F /* PedometerModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564B2C9B2DEF360000CA6F9F /* PedometerModule.swift */; };
 		61C20FDEEB87446FA55A0EC2 /* PoseDetectionFrameProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EA17E82B7C49F7ABC391E0 /* PoseDetectionFrameProcessor.m */; };
@@ -24,8 +25,10 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = whateverApp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = whateverApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = whateverApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		3A0629E88E84478E9B71E240 /* PoseDetectionFrameProcessor.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = PoseDetectionFrameProcessor.swift; path = PoseDetectionFrameProcessor.swift; sourceTree = "<group>"; };
-		46EA17E82B7C49F7ABC391E0 /* PoseDetectionFrameProcessor.m */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.objc; name = PoseDetectionFrameProcessor.m; path = PoseDetectionFrameProcessor.m; sourceTree = "<group>"; };
+		2BF974DF2DF02C6000B401E2 /* PedometerModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PedometerModule.m; sourceTree = "<group>"; };
+		2BF974E02DF02C6000B401E2 /* whateverApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "whateverApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		3A0629E88E84478E9B71E240 /* PoseDetectionFrameProcessor.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; path = PoseDetectionFrameProcessor.swift; sourceTree = "<group>"; };
+		46EA17E82B7C49F7ABC391E0 /* PoseDetectionFrameProcessor.m */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.objc; path = PoseDetectionFrameProcessor.m; sourceTree = "<group>"; };
 		564B2C9B2DEF360000CA6F9F /* PedometerModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerModule.swift; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = whateverApp/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = whateverApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -48,11 +51,14 @@
 		13B07FAE1A68108700A75B9A /* whateverApp */ = {
 			isa = PBXGroup;
 			children = (
+				2BF974DF2DF02C6000B401E2 /* PedometerModule.m */,
+				2BF974E02DF02C6000B401E2 /* whateverApp-Bridging-Header.h */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				761780EC2CA45674006654EE /* AppDelegate.swift */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
+				564B2C9B2DEF360000CA6F9F /* PedometerModule.swift */,
 			);
 			name = whateverApp;
 			sourceTree = "<group>";
@@ -76,7 +82,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				564B2C9B2DEF360000CA6F9F /* PedometerModule.swift */,
 				13B07FAE1A68108700A75B9A /* whateverApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
@@ -112,7 +117,6 @@
 				46EA17E82B7C49F7ABC391E0 /* PoseDetectionFrameProcessor.m */,
 				3A0629E88E84478E9B71E240 /* PoseDetectionFrameProcessor.swift */,
 			);
-			name = PoseDetectionFrameProcessor;
 			path = PoseDetectionFrameProcessor;
 			sourceTree = "<group>";
 		};
@@ -231,9 +235,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-whateverApp/Pods-whateverApp-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-whateverApp/Pods-whateverApp-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -248,9 +256,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-whateverApp/Pods-whateverApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-whateverApp/Pods-whateverApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -264,6 +276,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BF974E12DF02C6000B401E2 /* PedometerModule.m in Sources */,
 				564B2C9C2DEF360100CA6F9F /* PedometerModule.swift in Sources */,
 				761780ED2CA45674006654EE /* AppDelegate.swift in Sources */,
 				61C20FDEEB87446FA55A0EC2 /* PoseDetectionFrameProcessor.m in Sources */,
@@ -281,7 +294,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8C3G89D7KS;
+				DEVELOPMENT_TEAM = CXX54B75RT;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = whateverApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -296,7 +309,9 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.theolabs.zyraApp;
 				PRODUCT_NAME = whateverApp;
+				SWIFT_OBJC_BRIDGING_HEADER = "whateverApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -310,7 +325,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8C3G89D7KS;
+				DEVELOPMENT_TEAM = CXX54B75RT;
 				INFOPLIST_FILE = whateverApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -324,7 +339,9 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.theolabs.zyraApp;
 				PRODUCT_NAME = whateverApp;
+				SWIFT_OBJC_BRIDGING_HEADER = "whateverApp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -399,10 +416,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -471,10 +485,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

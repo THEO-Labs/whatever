@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { StatusBar, useColorScheme, View, StyleSheet } from 'react-native';
-import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import {NativeModules, StatusBar, StyleSheet, useColorScheme, View} from 'react-native';
+import {NavigationContainer, useNavigationContainerRef} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import AppNavigator from './src/navigation/AppNavigator';
-import { CustomHeader } from './src/components/CustomHeader';
+import {CustomHeader} from './src/components/CustomHeader';
+import {TrackerManager} from './src/utils/BackgroundTracker';
+import {calculateDailyActivityScores} from './src/utils/calculateActivityScore.ts';
+import {ActivityProvider} from './src/utils/ActivityContext.tsx';
+
+const {PedometerModule} = NativeModules;
 
 export default function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -20,6 +25,45 @@ export default function App() {
     })();
   }, []);
 
+    useEffect(() => {
+        const interval = setInterval(async () => {
+            if (
+                !PedometerModule ||
+                typeof PedometerModule.getTodaySteps !== 'function'
+            ) {
+                console.warn(
+                    '[StepsPoller] PedometerModule.getTodaySteps nicht verfügbar.',
+                );
+                return;
+            }
+
+            try {
+                const steps = await PedometerModule.getTodaySteps();
+                const raw = await AsyncStorage.getItem('todayScores');
+                const existing = JSON.parse(raw || '{}');
+                const updated = {...existing, steps};
+                await AsyncStorage.setItem('todayScores', JSON.stringify(updated));
+            } catch (err) {
+                console.warn(
+                    '[StepsPoller] Fehler beim Abrufen oder Speichern der Schritte:',
+                    err,
+                );
+            }
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            calculateDailyActivityScores().catch(err => {
+                console.warn('[Recalc] Fehler beim Berechnen der Scores:', err);
+            });
+        }, 10_000);
+        return () => clearInterval(interval);
+    }, []);
+
+
   if (!initialRoute) {
     return null;
   }
@@ -28,6 +72,8 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+        <ActivityProvider>
+      <TrackerManager/>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       {currentRoute !== 'Onboarding' && (
         <CustomHeader currentRoute={currentRoute} navigationRef={navigationRef} />
@@ -41,10 +87,12 @@ export default function App() {
           setCurrentRoute(navigationRef.getCurrentRoute()?.name);
         }}
       >
-        <View style={styles.navigator}>
+          <View style={styles.navigator}>
           <AppNavigator initialRoute={initialRoute} />
-        </View>
+          </View>
       </NavigationContainer>
+        </ActivityProvider>
+
     </View>
   );
 }

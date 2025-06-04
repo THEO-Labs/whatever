@@ -2,10 +2,13 @@ import React, {useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeEventEmitter, NativeModules} from 'react-native';
 import BackgroundGeolocation from 'react-native-background-geolocation';
+import {useActivity} from './ActivityContext.tsx';
 
 const {PedometerModule} = NativeModules;
 
 export const TrackerManager: React.FC = () => {
+  const {setActivity} = useActivity();
+
   useEffect(() => {
     if (!PedometerModule) {
       console.warn('[TrackerManager] PedometerModule is undefined. NativeEventEmitter cannot be initialized.');
@@ -22,6 +25,17 @@ export const TrackerManager: React.FC = () => {
     const activityListener = pedometerEmitter.addListener(
       'ActivityUpdate',
       async event => {
+        const type = event.activity;
+        if (
+            (type === 'walking' || type === 'running' || type === 'cycling') &&
+            event.confidence !== 'low'
+        ) {
+          setActivity('active');
+        } else {
+          setActivity('rest');
+        }
+
+
         await saveToBuffer({
           type: 'native-activity',
           data: event,
@@ -29,17 +43,6 @@ export const TrackerManager: React.FC = () => {
         });
       },
     );
-
-    // 3. BackgroundGeolocation Activity Listener
-    BackgroundGeolocation.onActivityChange(async activity => {
-      await saveToBuffer({
-        type: 'geo-activity',
-        data: activity,
-        timestamp: Date.now(),
-      });
-    });
-
-
     return () => {
       BackgroundGeolocation.removeAllListeners();
       activityListener.remove();
