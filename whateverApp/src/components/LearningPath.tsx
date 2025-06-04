@@ -130,7 +130,10 @@ export const LearningPath = () => {
 
 /* ---------- styles -------------------------------------------------- */
 const styles = StyleSheet.create({
-  container: { paddingVertical: 12 },
+  container: { 
+    paddingVertical: 12,
+},
+
   blobWrapper: {
     alignSelf: 'center',
     width: '70%',
