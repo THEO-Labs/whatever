@@ -159,31 +159,29 @@ export const LearningPath = () => {
           }
 
           return (
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() => {
-                const dayPlan = trainingPlan.find(p => p.day === item.id) || null;
-                if (dayPlan && item.status !== 'locked') {
-                  setSelectedPlan(dayPlan);
-                  setModalVisible(true);
-                }
-              }}
-              disabled={item.status === 'locked'}
-              style={{
-                width: 100,
-                alignItems: 'center',
-                marginVertical: 12,
-                alignSelf: 'center',
-                transform: [{ translateX: waveX(index, AMP, PERIOD) }],
-              }}
-            >
-              <LearningPathBlob
-                status={item.status}
-                phase={item.phase}
-                icon={item.icon}
-                label={item.label}
-              />
-            </TouchableOpacity>
+            <View
+                style={{
+                    width: 100,
+                    alignItems: 'center',
+                    marginVertical: 12,
+                    alignSelf: 'center',
+                    transform: [{ translateX: waveX(index, AMP, PERIOD) }],
+                }}
+                >
+                <LearningPathBlob
+                    status={item.status}
+                    phase={item.phase.toLowerCase()}
+                    icon={item.icon}
+                    label={item.label}
+                    onPress={() => {
+                    const dayPlan = trainingPlan.find(p => p.day === item.id) || null;
+                    if (dayPlan && item.status !== 'locked') {
+                        setSelectedPlan(dayPlan);
+                        setModalVisible(true);
+                    }
+                    }}
+            />
+    </View>
           );
         }}
       />
@@ -191,7 +189,10 @@ export const LearningPath = () => {
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
         dayPlan={selectedPlan}
+        
       />
+      {/* Show popup only if showPopup is true */}
+      
     </View>
   );
 };

@@ -15,9 +15,10 @@ export const LearningPathBlob: React.FC<LearningPathBlobProps> = ({
   phase,
   icon,
   label,
+  onPress,
 }) => {
-  const [isPressed, setIsPressed] = useState(false);
-  const getBlobStyle = () => {
+/*   const [isPressed, setIsPressed] = useState(false);
+ */  const getBlobStyle = (pressed: boolean) => {
   if (status === 'locked') {
     return {
       ...styles.blob,
@@ -43,7 +44,7 @@ export const LearningPathBlob: React.FC<LearningPathBlobProps> = ({
 
     return {
       ...styles.blob,
-      backgroundColor: isPressed ? '#E6E9DC' : completedBgColor[phase],
+      backgroundColor: pressed ? '#E6E9DC' : completedBgColor[phase] || '#ccc',
       shadowColor: completedShadowColor[phase],
       shadowOffset: { width: 0, height: 7 },
       shadowOpacity: 1,
@@ -55,14 +56,16 @@ export const LearningPathBlob: React.FC<LearningPathBlobProps> = ({
   // For in-progress
   return {
     ...styles.blob,
-    backgroundColor: Colors.mendark, // Fixed color
-    shadowColor: Colors.menlight,    // Fixed shadow
+    backgroundColor: Colors.mendark,
+    shadowColor: Colors.menlight,
     shadowOffset: { width: 0, height: 7 },
     shadowOpacity: 1,
     shadowRadius: 6,
     elevation: 5,
   };
 };
+
+
 
   const phaseShadowColor = {
     menstruation: Colors.menlight,
@@ -86,16 +89,13 @@ export const LearningPathBlob: React.FC<LearningPathBlobProps> = ({
 
   return (
     <View style={styles.container}>
-      <View
-        style={getBlobStyle()}
-        onStartShouldSetResponder={() => {
-          if (status !== 'locked') setIsPressed(true);
-          return false;
-        }}
-        onResponderRelease={() => setIsPressed(false)}
+     <Pressable
+        onPress={onPress}
+        disabled={status === 'locked'}
+        style={({ pressed }) => getBlobStyle(pressed)}
       >
         {renderIcon}
-      </View>
+      </Pressable>
       {label && <Text style={styles.label}>{label}</Text>}
     </View>
   );
@@ -112,22 +112,9 @@ const styles = StyleSheet.create({
   justifyContent: 'center',
   alignItems: 'center',
   position: 'relative',
-  // Remove any shadowColor or backgroundColor here
-  // Let `getBlobStyle()` handle it all
+
 },
-  inProgress: {
-    backgroundColor: Colors.weed,
-    shadowColor: Colors.lime, // Adjusted for better contrast
-    shadowOffset: { width: 0, height: 7 },  
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    elevation: 5,
-  },
   
-  locked: {
-    backgroundColor: Colors.comdark,
-    shadowColor: Colors.comlight,
-  },
 
   icon: {
     fontSize: 32,
