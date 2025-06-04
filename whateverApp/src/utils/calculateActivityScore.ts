@@ -82,7 +82,7 @@ export const calculateDailyActivityScores = async (): Promise<
       const restScore = Math.min(Math.max(parseFloat(((restTime / 180) * 100).toFixed(2)), 0), 100); // z.B. max 3h rest
       normalized[date] = { activityScore, restScore };
     }
-
+    console.log('Neu berechnet: ', normalized);
     await AsyncStorage.setItem('dailyActivityScores', JSON.stringify(normalized));
 
     return normalized;

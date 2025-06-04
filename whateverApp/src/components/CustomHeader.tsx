@@ -24,7 +24,6 @@ export const CustomHeader = ({ currentRoute, navigationRef }: { currentRoute?: s
         setFocus(todayScores.restScore ?? 0);
         setEnergy(todayScores.activityScore ?? 0);
         setSteps(todayScores2Raw.steps?.steps ?? 0);
-        console.log(todayScores);
       } catch (e) {
         console.warn('[CustomHeader] Failed to load scores:', e);
       }
